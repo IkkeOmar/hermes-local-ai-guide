@@ -4,186 +4,166 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hermes Agent × Local AI — Engineering Firm Setup Guide</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
   :root {
-    --navy-deep: #0d0d30;
-    --navy-dark: #001a3f;
-    --navy-card: #161655;
-    --navy-teal: #00355A;
-    --blackest: #000207;
-    --accent: #6ec1e4;
-    --accent-hover: #087bc5;
-    --text: #eeeeee;
+    --bg: #0d0d30;
+    --bg2: #001a3f;
+    --bg3: #161655;
+    --border: #1e3a5f;
+    --text: #e3e6eb;
     --text2: #b0c4d8;
-    --text3: #7a97b0;
-    --border: rgba(110,193,228,.15);
+    --accent: #6ec1e4;
+    --accent2: #087bc5;
     --green: #34d399;
     --orange: #fbbf24;
     --red: #f87171;
-    --font: 'JetBrains Mono','SF Mono','Fira Code','Consolas',monospace;
+    --font: 'JetBrains Mono','SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
     --font-body: 'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:80px}
-  body{background:var(--navy-deep);color:var(--text);font-family:var(--font-body);line-height:1.7;overflow-x:hidden}
-  ::selection{background:var(--accent);color:var(--navy-deep)}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.7;overflow-x:hidden}
+  ::selection{background:var(--accent);color:#000}
   ::-webkit-scrollbar{width:6px}
-  ::-webkit-scrollbar-track{background:var(--blackest)}
-  ::-webkit-scrollbar-thumb{background:var(--navy-teal);border-radius:3px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
   /* ─── NAV ─── */
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,48,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-  nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.5px;color:#fff}
-  nav .logo svg{width:30px;height:30px;flex-shrink:0}
-  nav .logo span{font-weight:700;color:#fff}
-  nav .logo small{font-weight:300;color:var(--accent);font-size:12px;letter-spacing:2px;text-transform:uppercase}
-  nav .links{display:flex;gap:20px;font-size:12px;font-weight:500;letter-spacing:.3px;text-transform:uppercase}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+  nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.3px}
+  nav .logo svg{width:28px;height:28px}
+  nav .logo span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  nav .links{display:flex;gap:16px;font-size:13px}
   nav .links a{color:var(--text2);text-decoration:none;transition:color .2s;white-space:nowrap}
-  nav .links a:hover{color:var(--accent)}
-  .nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:8px}
+  nav .links a:hover{color:var(--text)}
+  .nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
 
   /* ─── HERO ─── */
-  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--navy-deep) 0%,var(--navy-dark) 50%,var(--navy-deep) 100%)}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
   .hero-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-  .hero-bg .orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.12;animation:orbFloat 25s ease-in-out infinite}
-  .hero-bg .orb:nth-child(1){width:500px;height:500px;background:var(--accent);top:-15%;left:-8%;animation-delay:0s}
-  .hero-bg .orb:nth-child(2){width:400px;height:400px;background:var(--navy-teal);bottom:-10%;right:-5%;animation-delay:-8s}
-  .hero-bg .orb:nth-child(3){width:350px;height:350px;background:rgba(22,22,85,.8);top:30%;left:55%;animation-delay:-16s}
-  @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-50px) scale(1.08)}66%{transform:translate(-25px,25px) scale(.92)}}
-
-  .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--navy-deep),transparent);pointer-events:none}
-
-  .hero h1{font-size:clamp(2rem,5vw,3.8rem);font-weight:800;line-height:1.1;margin-bottom:12px;position:relative;color:#fff}
-  .hero h1 span{color:var(--accent)}
-  .hero p{font-size:clamp(1rem,2vw,1.2rem);color:var(--text2);max-width:680px;margin-bottom:36px;position:relative;font-weight:400;line-height:1.6}
-  .hero-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;position:relative}
-  .hero-badges span{padding:6px 18px;border:1px solid var(--border);border-radius:100px;font-size:11px;font-family:var(--font);color:var(--text2);font-weight:500;letter-spacing:.3px;text-transform:uppercase}
-  .hero-badges span.live{border-color:var(--accent);color:var(--accent);animation:pulse 2s ease-in-out infinite}
+  .hero-bg .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:orbFloat 20s ease-in-out infinite}
+  .hero-bg .orb:nth-child(1){width:500px;height:500px;background:var(--accent);top:-10%;left:-10%;animation-delay:0s}
+  .hero-bg .orb:nth-child(2){width:400px;height:400px;background:var(--accent2);bottom:-5%;right:-5%;animation-delay:-7s}
+  .hero-bg .orb:nth-child(3){width:300px;height:300px;background:var(--green);top:40%;left:50%;animation-delay:-14s}
+  @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.95)}}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:16px;position:relative}
+  .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{font-size:clamp(1rem,2vw,1.2rem);color:var(--text2);max-width:640px;margin-bottom:40px;position:relative}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative}
+  .hero-badges span{padding:6px 16px;border:1px solid var(--border);border-radius:100px;font-size:12px;font-family:var(--font);color:var(--text2)}
+  .hero-badges span.live{border-color:var(--green);color:var(--green);animation:pulse 2s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-  .scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text3);font-size:10px;font-family:var(--font);letter-spacing:3px;text-transform:uppercase;animation:bounce 2s ease-in-out infinite}
-  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-  .scroll-indicator::after{content:'↓';font-size:16px;color:var(--accent);opacity:.6}
+  .scroll-indicator{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text2);font-size:11px;font-family:var(--font);letter-spacing:2px;text-transform:uppercase;animation:bounce 2s ease-in-out infinite}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 
-  /* ─── ARCHITECTURE SECTION ─── */
-  .arch-section{padding:80px 24px 60px;max-width:1100px;margin:0 auto;position:relative}
-  .arch-section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3}
-  .arch-section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:12px;color:#fff}
-  .arch-section h2 .num{display:inline-block;width:36px;height:36px;border-radius:10px;background:var(--accent);color:var(--navy-deep);font-size:15px;font-weight:800;text-align:center;line-height:36px;margin-right:12px;vertical-align:middle}
-  .arch-section > p{color:var(--text2);margin-bottom:36px;max-width:720px;font-size:15px}
-  .arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:32px}
-  .arch-card{background:var(--navy-card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color .3s,transform .3s,box-shadow .3s}
-  .arch-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(110,193,228,.1)}
-  .arch-card .icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
-  .arch-card h3{font-size:15px;font-weight:700;margin-bottom:8px;color:#fff;letter-spacing:-.2px}
-  .arch-card p{font-size:13px;color:var(--text2);line-height:1.7;font-weight:400}
+  /* ─── ARCHITECTURE DIAGRAM ─── */
+  .arch-section{padding:60px 24px;max-width:1100px;margin:0 auto}
+  .arch-section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:12px}
+  .arch-section h2 .num{display:inline-block;width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;font-size:14px;font-weight:800;text-align:center;line-height:32px;margin-right:10px;vertical-align:middle}
+  .arch-section > p{color:var(--text2);margin-bottom:32px;max-width:700px}
+  .arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+  .arch-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color .3s,transform .3s}
+  .arch-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .arch-card .icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+  .arch-card h3{font-size:15px;font-weight:600;margin-bottom:6px}
+  .arch-card p{font-size:13px;color:var(--text2);line-height:1.6}
 
   /* ─── SECTION COMMON ─── */
-  section{padding:80px 24px;max-width:960px;margin:0 auto;position:relative}
-  section:not(:last-of-type)::after{content:'';position:absolute;bottom:0;left:10%;width:80%;height:1px;background:linear-gradient(90deg,transparent,rgba(110,193,228,.12),transparent)}
-  section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:14px;color:#fff}
-  section h2 .phase-tag{font-size:10px;font-family:var(--font);color:var(--accent);background:rgba(110,193,228,.12);padding:3px 12px;border-radius:100px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;border:1px solid rgba(110,193,228,.2)}
-  section > p.sub{color:var(--text2);margin-bottom:36px;font-size:15px;max-width:720px}
-
-  /* ─── COMMAND TABLE (prerequisites) ─── */
-  .cmd-table-wrapper{background:var(--navy-card);border:1px solid var(--border);border-radius:16px;padding:4px;overflow:hidden;margin-bottom:24px}
-  .cmd-table{width:100%;border-collapse:collapse;font-size:13px;min-width:500px}
-  .cmd-table th,.cmd-table td{padding:14px 18px;text-align:left;border-bottom:1px solid rgba(255,255,255,.04)}
-  .cmd-table th{font-family:var(--font);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:600;background:rgba(110,193,228,.04)}
-  .cmd-table td{color:var(--text2);font-weight:400}
-  .cmd-table td:first-child{color:#fff;font-weight:600}
-  .cmd-table tr:last-child td{border-bottom:none}
-  .cmd-table tr:hover td{background:rgba(110,193,228,.03)}
+  section{padding:60px 24px;max-width:900px;margin:0 auto}
+  section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+  section h2 .phase-tag{font-size:11px;font-family:var(--font);color:var(--accent);background:rgba(108,138,255,.12);padding:2px 10px;border-radius:100px;font-weight:500}
+  section > p.sub{color:var(--text2);margin-bottom:32px}
+  section:not(:last-of-type){border-bottom:1px solid var(--border)}
 
   /* ─── CODE BLOCKS ─── */
-  .code-block{position:relative;background:var(--blackest);border:1px solid var(--border);border-radius:14px;margin:20px 0;overflow:hidden}
-  .code-block .header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(110,193,228,.04);border-bottom:1px solid var(--border)}
-  .code-block .header .lang{font-size:10px;font-family:var(--font);color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:600}
-  .code-block .header .copy-btn{background:rgba(110,193,228,.08);border:1px solid var(--border);color:var(--text2);padding:5px 14px;border-radius:8px;font-size:10px;font-family:var(--font);cursor:pointer;transition:all .2s;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
-  .code-block .header .copy-btn:hover{background:rgba(110,193,228,.18);color:var(--accent);border-color:var(--accent)}
-  .code-block .header .copy-btn.copied{background:rgba(52,211,153,.15);color:var(--green);border-color:var(--green)}
-  .code-block pre{padding:16px;overflow-x:auto;font-family:var(--font);font-size:13px;line-height:1.7;color:var(--text)}
-  .code-block pre .cmt{color:#5c6f87}
-  .code-block pre .kw{color:#c8a8e8}
+  .code-block{position:relative;background:var(--bg3);border:1px solid var(--border);border-radius:12px;margin:16px 0;overflow:hidden}
+  .code-block .header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+  .code-block .header .lang{font-size:11px;font-family:var(--font);color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+  .code-block .header .copy-btn{background:rgba(255,255,255,.06);border:none;color:var(--text2);padding:4px 12px;border-radius:6px;font-size:11px;font-family:var(--font);cursor:pointer;transition:all .2s}
+  .code-block .header .copy-btn:hover{background:rgba(108,138,255,.2);color:var(--accent)}
+  .code-block .header .copy-btn.copied{background:rgba(52,211,153,.15);color:var(--green)}
+  .code-block pre{padding:14px;overflow-x:auto;font-family:var(--font);font-size:13px;line-height:1.6;color:var(--text)}
+  .code-block pre .cmt{color:#5c6370}
+  .code-block pre .kw{color:#c678dd}
   .code-block pre .str{color:#98c379}
-  .code-block pre .fn{color:var(--accent)}
+  .code-block pre .fn{color:#61afef}
   .code-block pre .num{color:#d19a66}
   .code-block pre .var{color:#e06c75}
   .code-block pre .sec{color:#56b6c2}
 
   /* ─── NOTE / TIP / WARN ─── */
-  .callout{padding:18px 20px;border-radius:14px;margin:20px 0;border-left:3px solid;font-size:14px;background:var(--navy-card);border:1px solid var(--border);position:relative}
-  .callout.info{border-left-color:var(--accent);background:rgba(110,193,228,.06)}
-  .callout.warn{border-left-color:var(--orange);background:rgba(251,191,36,.06)}
-  .callout.success{border-left-color:var(--green);background:rgba(52,211,153,.06)}
-  .callout.err{border-left-color:var(--red);background:rgba(248,113,113,.06)}
-  .callout strong{display:block;margin-bottom:4px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700}
-  .callout.warn strong{color:var(--orange)}
-  .callout.success strong{color:var(--green)}
-  .callout.err strong{color:var(--red)}
-  .callout code{background:rgba(110,193,228,.1);padding:2px 8px;border-radius:5px;font-family:var(--font);font-size:12px;color:var(--text)}
+  .callout{padding:16px 18px;border-radius:12px;margin:16px 0;border-left:3px solid;font-size:14px}
+  .callout.info{background:rgba(108,138,255,.08);border-color:var(--accent)}
+  .callout.warn{background:rgba(251,191,36,.08);border-color:var(--orange)}
+  .callout.success{background:rgba(52,211,153,.08);border-color:var(--green)}
+  .callout.err{background:rgba(248,113,113,.08);border-color:var(--red)}
+  .callout strong{display:block;margin-bottom:4px;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  .callout code{background:rgba(255,255,255,.08);padding:1px 6px;border-radius:4px;font-family:var(--font);font-size:12px}
 
   /* ─── CHECKLIST ─── */
   .checklist{list-style:none;padding:0}
-  .checklist li{padding:12px 0 12px 34px;position:relative;font-size:14px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text2)}
-  .checklist li::before{content:'☐';position:absolute;left:0;color:var(--text3);font-size:18px;top:10px}
+  .checklist li{padding:10px 0 10px 32px;position:relative;font-size:14px;border-bottom:1px solid rgba(255,255,255,.04)}
+  .checklist li::before{content:'☐';position:absolute;left:0;color:var(--text2);font-size:16px}
   .checklist li.done::before{content:'☑';color:var(--green)}
 
   /* ─── PHASE PROGRESS ─── */
-  .phase-track{display:flex;gap:10px;margin:28px 0;flex-wrap:wrap}
-  .phase-dot{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:100px;font-size:11px;font-family:var(--font);background:var(--navy-card);border:1px solid var(--border);color:var(--text3);font-weight:500;letter-spacing:.3px}
-  .phase-dot.active{background:rgba(110,193,228,.1);border-color:var(--accent);color:var(--accent)}
-  .phase-dot.done{background:rgba(52,211,153,.08);border-color:var(--green);color:var(--green)}
-
-  /* ─── PROMPT TEMPLATES ─── */
-  .prompt-card{background:var(--navy-card);border:1px solid var(--border);border-radius:14px;padding:20px;margin:16px 0;position:relative}
-  .prompt-card::before{content:'Prompt';position:absolute;top:-9px;left:16px;background:var(--navy-deep);padding:0 8px;font-size:9px;font-family:var(--font);color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-weight:700}
-  .prompt-card p{font-size:14px;line-height:1.7;color:var(--text2);font-style:italic}
+  .phase-track{display:flex;gap:8px;margin:24px 0;flex-wrap:wrap}
+  .phase-dot{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;font-size:12px;font-family:var(--font);background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+  .phase-dot.active{background:rgba(108,138,255,.12);border-color:var(--accent);color:var(--accent)}
+  .phase-dot.done{background:rgba(52,211,153,.1);border-color:var(--green);color:var(--green)}
 
   /* ─── TROUBLESHOOTING ─── */
-  .trouble-item{background:var(--navy-card);border:1px solid var(--border);border-radius:14px;margin:14px 0;overflow:hidden}
-  .trouble-item summary{padding:16px 20px;cursor:pointer;font-weight:600;font-size:14px;display:flex;align-items:center;gap:10px;transition:background .2s;color:#fff;letter-spacing:-.2px}
-  .trouble-item summary:hover{background:rgba(110,193,228,.04)}
-  .trouble-item summary::-webkit-details-marker{color:var(--accent)}
-  .trouble-item .content{padding:0 20px 18px;font-size:13px;color:var(--text2);line-height:1.8}
+  .trouble-item{border:1px solid var(--border);border-radius:12px;margin:12px 0;overflow:hidden}
+  .trouble-item summary{padding:14px 18px;cursor:pointer;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;transition:background .2s}
+  .trouble-item summary:hover{background:rgba(255,255,255,.02)}
+  .trouble-item summary::-webkit-details-marker{color:var(--text2)}
+  .trouble-item .content{padding:0 18px 14px;font-size:13px;color:var(--text2);line-height:1.7}
+
+  /* ─── COMMAND TABLE ─── */
+  .cmd-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .cmd-table th,.cmd-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  .cmd-table th{font-family:var(--font);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2)}
+  .cmd-table td code{font-family:var(--font);font-size:12px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:4px}
+  .cmd-table tr:hover td{background:rgba(255,255,255,.02)}
 
   /* ─── ANIMATED TERMINAL ─── */
-  .term-demo{background:var(--blackest);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:20px 0}
-  .term-demo .term-bar{background:rgba(13,13,48,.8);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+  .term-demo{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:16px 0}
+  .term-demo .term-bar{background:var(--bg2);padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
   .term-demo .term-bar .dot{width:10px;height:10px;border-radius:50%}
   .term-demo .term-bar .dot.r{background:#ff5f56}
   .term-demo .term-bar .dot.y{background:#ffbd2e}
   .term-demo .term-bar .dot.g{background:#27c93f}
-  .term-demo .term-bar .title{font-size:11px;color:var(--text3);margin-left:8px;font-family:var(--font)}
-  .term-demo .term-body{padding:18px;font-family:var(--font);font-size:13px;line-height:1.8;min-height:100px;color:var(--text)}
-  .term-demo .term-body .prompt{color:var(--accent);font-weight:500}
+  .term-demo .term-bar .title{font-size:11px;color:var(--text2);margin-left:6px;font-family:var(--font)}
+  .term-demo .term-body{padding:14px;font-family:var(--font);font-size:13px;line-height:1.7;min-height:100px}
+  .term-demo .term-body .prompt{color:var(--green)}
   .term-demo .term-body .output{color:var(--text2)}
-  .term-demo .term-body .cursor{display:inline-block;width:8px;height:17px;background:var(--accent);animation:blink 1s step-end infinite;vertical-align:text-bottom;margin-left:3px}
+  .term-demo .term-body .cursor{display:inline-block;width:8px;height:16px;background:var(--text);animation:blink 1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
   @keyframes blink{50%{opacity:0}}
-  .typing-line{overflow:hidden;white-space:nowrap;animation:typing 2.5s steps(40,end) forwards;display:inline-block;max-width:100%}
-  .typing-line.d1{animation-delay:.5s;width:0}
-  .typing-line.d2{animation-delay:2.8s;width:0}
-  .typing-line.d3{animation-delay:5s;width:0}
+  .typing-line{overflow:hidden;white-space:nowrap;animation:typing 2s steps(40,end) forwards;display:inline-block;max-width:100%}
+  .typing-line.d1{animation-delay:.3s;width:0}
+  .typing-line.d2{animation-delay:2.5s;width:0}
+  .typing-line.d3{animation-delay:4.5s;width:0}
   @keyframes typing{to{width:100%}}
 
+  /* ─── PROMPT TEMPLATES ─── */
+  .prompt-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;margin:12px 0;position:relative}
+  .prompt-card::before{content:'Prompt';position:absolute;top:-8px;left:14px;background:var(--bg);padding:0 6px;font-size:10px;font-family:var(--font);color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
+  .prompt-card p{font-size:14px;line-height:1.6;color:var(--text2);font-style:italic}
+
   /* ─── FOOTER ─── */
-  footer{text-align:center;padding:60px 24px 40px;color:var(--text3);font-size:12px;position:relative;margin-top:40px;border-top:1px solid var(--border)}
-  footer a{color:var(--accent);text-decoration:none;transition:color .2s}
-  footer a:hover{color:var(--accent-hover)}
+  footer{text-align:center;padding:60px 24px 40px;color:var(--text2);font-size:12px;border-top:1px solid var(--border);margin-top:40px}
+  footer a{color:var(--accent);text-decoration:none}
 
   /* ─── RESPONSIVE ─── */
   @media(max-width:768px){
-    nav .links{display:none;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--navy-deep);border-bottom:1px solid var(--border);padding:16px 24px;gap:16px;backdrop-filter:blur(16px)}
+    nav .links{display:none;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 24px}
     nav .links.open{display:flex}
     .nav-toggle{display:block}
     .arch-grid{grid-template-columns:1fr}
-    section{padding:50px 16px}
+    section{padding:40px 16px}
     .hero{padding:100px 16px 60px}
     .code-block pre{font-size:12px}
-    .cmd-table{font-size:12px;min-width:auto}
-    .cmd-table th,.cmd-table td{padding:10px 12px}
   }
 </style>
 </head>
@@ -192,20 +172,21 @@
 <!-- ===== NAV ===== -->
 <nav>
   <div class="logo">
-    <svg viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="13" stroke="#6ec1e4" stroke-width="1.5" opacity=".6"/><circle cx="15" cy="15" r="8" stroke="#6ec1e4" stroke-width="1.5" opacity=".4"/><circle cx="15" cy="15" r="3" fill="#6ec1e4"/></svg>
-    <div><span>Hermes</span><br><small>LOCAL AI</small></div>
+    <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="url(#g)" stroke-width="2"/><path d="M10 10h8v8h-8z" fill="url(#g)" opacity=".6"/><defs><linearGradient id="g" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6c8aff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs></svg>
+    <span>Hermes</span>
   </div>
   <button class="nav-toggle" onclick="document.querySelector('.links').classList.toggle('open')">☰</button>
   <div class="links">
-    <a href="#prereqs">Setup</a>
+    <a href="#prereqs">Prerequisites</a>
     <a href="#phase1">Phase 1</a>
     <a href="#phase2">Phase 2</a>
     <a href="#phase3">Phase 3</a>
     <a href="#phase4">Phase 4</a>
     <a href="#phase5">Phase 5</a>
     <a href="#phase6">Phase 6</a>
-    <a href="#hermes-helps">Helps</a>
-    <a href="#trouble">Fix</a>
+    <a href="#hermes-helps">Hermes Helps</a>
+    <a href="#strategy">Strategy</a>
+    <a href="#trouble">Troubleshooting</a>
   </div>
 </nav>
 
@@ -220,8 +201,9 @@
     <span>No API Keys</span>
     <span>Self-Hosted</span>
     <span>1M Context</span>
+    <span>Multi-Model</span>
   </div>
-  <div class="scroll-indicator">Scroll</div>
+  <div class="scroll-indicator">Scroll ↓</div>
 </div>
 
 <!-- ===== ARCHITECTURE ===== -->
@@ -230,32 +212,32 @@
   <p>Everything runs on a single powerful PC. You access it from your laptop, phone, or another machine via SSH, Telegram, or a web dashboard.</p>
   <div class="arch-grid">
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15);color:var(--accent)">🧠</div>
+      <div class="icon" style="background:rgba(108,138,255,.15)">🧠</div>
       <h3>MiniMax M3 (Local LLM)</h3>
       <p>428B parameter MoE model (23B active). Served via vLLM or Ollama on the PC. Provides reasoning, tool-calling, and code generation without any cloud API.</p>
     </div>
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15);color:var(--accent)">⚡</div>
+      <div class="icon" style="background:rgba(167,139,250,.15)">⚡</div>
       <h3>Hermes Agent</h3>
       <p>The self-improving agent that connects to the local model. Handles file editing, terminal commands, web browsing, delegation, and cross-session memory.</p>
     </div>
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15);color:var(--accent)">🔗</div>
+      <div class="icon" style="background:rgba(52,211,153,.15)">🔗</div>
       <h3>SSH + Gateway</h3>
       <p>SSH from any device on the network. Optional Telegram/Discord gateway for remote input. Hermes CLI works identically over SSH.</p>
     </div>
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15);color:var(--accent)">📁</div>
+      <div class="icon" style="background:rgba(251,191,36,.15)">📁</div>
       <h3>File Access & Backups</h3>
       <p>Syncthing for live sync, Restic for encrypted versioned backups, and a shared network drive for office suite document access.</p>
     </div>
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15);color:var(--accent)">🐙</div>
+      <div class="icon" style="background:rgba(248,113,113,.15)">🐙</div>
       <h3>GitHub Integration</h3>
       <p>Hermes connects to GitHub via SSH deploy keys and the GitHub CLI. Can open PRs, run CI checks, create repos, and manage issues.</p>
     </div>
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15);color:var(--accent)">📋</div>
+      <div class="icon" style="background:rgba(86,182,194,.15)">📋</div>
       <h3>Office Suite</h3>
       <p>OnlyOffice or LibreOffice for document editing. Shared directories across the team. Hermes generates .docx, .xlsx, .pptx files on demand.</p>
     </div>
@@ -269,57 +251,63 @@
 
   <div class="cmd-table-wrapper">
   <table class="cmd-table">
-    <thead><tr><th>Component</th><th>Recommended</th><th>Minimum</th></tr></thead>
-    <tbody>
-      <tr><td>RAM</td><td>64 GB</td><td>32 GB</td></tr>
-      <tr><td>GPU</td><td>RTX 4090 24GB / 2× RTX 3090</td><td>RTX 3060 12GB</td></tr>
-      <tr><td>Storage</td><td>2 TB NVMe SSD</td><td>500 GB NVMe</td></tr>
-      <tr><td>CPU</td><td>AMD Ryzen 9 / Intel i9 (16+ cores)</td><td>8 cores</td></tr>
-      <tr><td>OS</td><td>Ubuntu 24.04 LTS (or Debian 12)</td><td>Ubuntu 22.04</td></tr>
-      <tr><td>Network</td><td>Static IP or Tailscale</td><td>DHCP + local DNS</td></tr>
-    </tbody>
+    <tr><th>Component</th><th>Recommended</th><th>Minimum</th></tr>
+    <tr><td>RAM</td><td>64 GB</td><td>32 GB</td></tr>
+    <tr><td>GPU</td><td>RTX 4090 24 GB or 2× RTX 3090</td><td>RTX 3060 12 GB</td></tr>
+    <tr><td>Storage</td><td>2 TB NVMe SSD</td><td>500 GB NVMe</td></tr>
+    <tr><td>CPU</td><td>AMD Ryzen 9 / Intel i9 (16+ cores)</td><td>8 cores</td></tr>
+    <tr><td>OS</td><td>Ubuntu 24.04 LTS (or Debian 12)</td><td>Ubuntu 22.04</td></tr>
+    <tr><td>Network</td><td>Static IP or Tailscale</td><td>DHCP + local DNS</td></tr>
   </table>
   </div>
 
-  <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Base system setup</span>
-sudo apt update && sudo apt upgrade -y
-sudo apt install nvidia-driver-550 nvidia-utils-550
-sudo apt install docker.io docker-compose-v2
-sudo apt install git curl python3 python3-pip python3-venv
-
-<span class="cmt"># Node.js 20+</span>
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash - && sudo apt install -y nodejs</pre>
-  </div>
-
-  <div class="callout info"><strong>💡 Already set up?</strong> Jump straight to <a href="#phase1" style="color:var(--accent)">Phase 1</a> — you're on the right track.</div>
+  <ul class="checklist">
+    <li>Ubuntu 24.04 LTS installed and updated: <code>sudo apt update && sudo apt upgrade -y</code></li>
+    <li>NVIDIA drivers + CUDA: <code>sudo apt install nvidia-driver-550 nvidia-utils-550</code></li>
+    <li>Docker + Docker Compose: <code>sudo apt install docker.io docker-compose-v2</code></li>
+    <li>Git + Curl + Python3: <code>sudo apt install git curl python3 python3-pip python3-venv</code></li>
+    <li>Node.js 20+: <code>curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash - && sudo apt install -y nodejs</code></li>
+    <li class="done">You're reading this guide — you're on the right track</li>
+  </ul>
 </section>
 
 <!-- ===== PHASE 1 ===== -->
 <section id="phase1">
-  <h2><span class="num">1</span> Set Up the Local AI <span class="phase-tag">Phase 1/6</span></h2>
-  <p class="sub">Install Ollama or vLLM and pull MiniMax M3 — the 428B MoE model that runs entirely on your hardware.</p>
+  <h2><span class="num">1</span> Set Up the Local AI <span class="phase-tag">phase 1/6</span></h2>
+  <p class="sub">Install Ollama, pull MiniMax M3, and verify the model works — then configure it to serve an OpenAI-compatible API.</p>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">1.1 Install Ollama</h3>
+  <div class="phase-track">
+    <span class="phase-dot active">1.1 Install Ollama</span>
+    <span class="phase-dot">1.2 Pull M3</span>
+    <span class="phase-dot">1.3 64K Context</span>
+    <span class="phase-dot">1.4 Verify API</span>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.1 — Install Ollama</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>curl -fsSL https://ollama.com/install.sh | sh
+<span class="cmt"># Verify</span>
 ollama --version
 curl http://localhost:11434/api/tags</pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">1.2 Pull MiniMax M3</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.2 — Pull MiniMax M3</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>ollama pull minimax-m3:q4_K_M
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Pull the M3 model (Quantized Q4_K_M — best quality/speed balance)</span>
+ollama pull minimax-m3:q4_K_M
+
+<span class="cmt"># Verify it loaded correctly</span>
 ollama ps</pre>
   </div>
-  <div class="callout info"><strong>⚡ Alternative — vLLM</strong> For production workloads: <code>pip install vllm</code> and serve via <code>python -m vllm.entrypoints.openai.api_server --model minimax/minimax-m3 --tensor-parallel-size 2 --port 8000</code></div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">1.3 Create 64K Context Model</h3>
+  <div class="callout info"><strong>⚡ Alternative: vLLM</strong>For production serving with higher throughput, use vLLM instead: <code>pip install vllm && python -m vllm.entrypoints.openai.api_server --model minimax/minimax-m3 --tensor-parallel-size 2 --port 8000</code></div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.3 — Create 64K Context Model</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Default Ollama context is 2048 tokens — way too small. Hermes needs 64K+ for agentic tasks.</p>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>cat > ~/Modelfile-m3-64k << 'EOF'
 FROM minimax-m3:q4_K_M
 PARAMETER num_ctx 64000
@@ -329,9 +317,9 @@ EOF
 ollama create m3-64k -f ~/Modelfile-m3-64k</pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">1.4 Verify API Works</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.4 — Verify the API Works</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>curl http://localhost:11434/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
@@ -340,48 +328,59 @@ ollama create m3-64k -f ~/Modelfile-m3-64k</pre>
     "max_tokens": 100
   }'</pre>
   </div>
-  <div class="callout success"><strong>✅ Expected</strong> JSON response with <code>"MiniMax"</code> in the <code>content</code> field.</div>
+
+  <div class="callout success"><strong>✅ Done</strong>If you see a JSON response with "MiniMax" in the content, your local AI is running.</div>
 </section>
 
 <!-- ===== PHASE 2 ===== -->
 <section id="phase2">
-  <h2><span class="num">2</span> Install & Configure Hermes <span class="phase-tag">Phase 2/6</span></h2>
-  <p class="sub">Install the Hermes agent and point it at your local MiniMax model. Two configuration options below.</p>
+  <h2><span class="num">2</span> Install & Configure Hermes <span class="phase-tag">phase 2/6</span></h2>
+  <p class="sub">Install Hermes Agent, configure it to use your local M3 model, and set up skill management.</p>
 
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | sh
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Install Hermes via the recommended method</span>
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | sh
+
+<span class="cmt"># Or via pip</span>
+<span class="cmt"># pip install hermes-agent</span>
+
+<span class="cmt"># Verify</span>
 hermes --version</pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Option A: Interactive Setup</h3>
+  <div class="callout info"><strong>🔧 Configuration</strong>Edit <code>~/.hermes/config.yaml</code> to point to your local M3 model. Two ways to do this:</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option A: Interactive Setup</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>hermes setup
 <span class="cmt"># → Select "Custom Endpoint"</span>
 <span class="cmt"># → Enter: http://localhost:11434/v1</span>
-<span class="cmt"># → API key: no-key (or placeholder)</span>
+<span class="cmt"># → API key: no-key (or any placeholder)</span>
 <span class="cmt"># → Model: m3-64k</span></pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Option B: Manual Config</h3>
-  <p style="color:var(--text2);font-size:14px;margin-bottom:8px">Write to <code style="background:rgba(110,193,228,.1);padding:2px 8px;border-radius:5px;font-family:var(--font);font-size:12px">~/.hermes/config.yaml</code>:</p>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option B: Manual Config</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Write this to <code>~/.hermes/config.yaml</code>:</p>
   <div class="code-block">
-    <div class="header"><span class="lang">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="kw">model</span>:
-  <span class="var">default</span>: <span class="str">"m3-64k"</span>
-  <span class="var">provider</span>: <span class="str">"custom"</span>
-  <span class="var">base_url</span>: <span class="str">"http://localhost:11434/v1"</span>
-  <span class="kw">fallback</span>:
-    <span class="var">provider</span>: <span class="str">"custom"</span>
-    <span class="var">base_url</span>: <span class="str">"http://localhost:11434/v1"</span>
-    <span class="var">model</span>: <span class="str">"llama3.2:3b"</span></pre>
+    <div class="header"><span class="lang">YAML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre>model:
+  default: "m3-64k"
+  provider: "custom"
+  base_url: "http://localhost:11434/v1"
+
+<span class="cmt"># Optional: Fallback to a faster model for simple queries</span>
+  fallback:
+    provider: "custom"
+    base_url: "http://localhost:11434/v1"
+    model: "llama3.2:3b"</pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Keep Model Loaded</h3>
-  <p style="color:var(--text2);font-size:14px;margin-bottom:8px">Override Ollama's 5-minute idle timeout:</p>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Keep the Model Loaded</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Ollama unloads models after 5 minutes of inactivity. Keep M3 hot:</p>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>sudo mkdir -p /etc/systemd/system/ollama.service.d
 sudo tee /etc/systemd/system/ollama.service.d/override.conf << 'EOF'
 [Service]
@@ -390,210 +389,700 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl restart ollama</pre>
   </div>
-  <div class="callout success"><strong>✅ Done</strong> Run <code>hermes</code> to start a session — zero cloud calls.</div>
+
+  <div class="callout success"><strong>✅ Done</strong>Run <code>hermes</code> to start a session. It should respond using your local M3 with zero cloud calls.</div>
 </section>
 
 <!-- ===== PHASE 3 ===== -->
 <section id="phase3">
-  <h2><span class="num">3</span> SSH + Network Access <span class="phase-tag">Phase 3/6</span></h2>
-  <p class="sub">Enable remote access so you can control Hermes from your laptop, phone, or another machine on the network.</p>
+  <h2><span class="num">3</span> SSH + Network Access <span class="phase-tag">phase 3/6</span></h2>
+  <p class="sub">Make the PC accessible from your laptop, phone, or a colleague's machine — securely.</p>
 
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>sudo apt install openssh-server
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Install & enable SSH server</span>
+sudo apt install openssh-server
 sudo systemctl enable --now ssh
+
+<span class="cmt"># Set up firewall — only allow SSH from your LAN</span>
 sudo ufw allow from 192.168.1.0/24 to any port 22 proto tcp
-<span class="cmt"># Adjust subnet to your LAN</span></pre>
+<span class="cmt"># (Adjust subnet to match your network)</span></pre>
   </div>
 
-  <div class="callout warn"><strong>🔒 Security</strong> Never expose SSH directly to the internet. Use Tailscale, WireGuard, or Cloudflare Tunnel. Disable password auth after copying your key.</div>
+  <div class="callout warn"><strong>🔒 Security</strong>Never expose SSH directly to the internet. Use a VPN (Tailscale, WireGuard) or a bastion host for remote access. Add your SSH key instead of using passwords:</div>
 
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <div class="header"><span class="lang">Bash (from your laptop)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>ssh-copy-id user@hermes-pc-ip
+<span class="cmt"># Then disable password auth on the PC:</span>
 sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-<span class="cmt"># or: s/^PasswordAuthentication yes/...</span>
+<span class="cmt"># Or: sudo sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config</span>
 sudo systemctl restart ssh</pre>
   </div>
 
-  <div class="callout success"><strong>✅ Verify</strong> <code>ssh user@hermes-pc "ollama ps && hermes --version"</code></div>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Using Hermes over SSH</h3>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># From your laptop — Hermes runs on the PC, you control it remotely</span>
+ssh user@hermes-pc
+hermes
+<span class="cmt"># Now you're talking to Hermes via the local M3. All files are on the PC.</span></pre>
+  </div>
+
+  <div class="callout success"><strong>✅ Done</strong>Test with: <code>ssh user@hermes-pc "ollama ps && hermes --version"</code></div>
 </section>
 
 <!-- ===== PHASE 4 ===== -->
 <section id="phase4">
-  <h2><span class="num">4</span> GitHub Integration <span class="phase-tag">Phase 4/6</span></h2>
-  <p class="sub">Connect Hermes to GitHub so it can open PRs, run CI, create repos, and manage issues autonomously.</p>
+  <h2><span class="num">4</span> GitHub Integration <span class="phase-tag">phase 4/6</span></h2>
+  <p class="sub">Connect Hermes to your org's GitHub. Deploy keys, CLI auth, and CI/CD pipeline setup.</p>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Install & Auth GitHub CLI</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list
-sudo apt update && sudo apt install gh
-gh auth login --hostname github.com --git-protocol ssh</pre>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Install GitHub CLI</span>
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+  sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
+  sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update && sudo apt install gh -y
+
+<span class="cmt"># Authenticate (device flow)</span>
+gh auth login --hostname github.com --git-protocol ssh
+
+<span class="cmt"># Verify</span>
+gh auth status
+gh repo list</pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Add Hermes Helpers</h3>
-  <p style="color:var(--text2);font-size:14px;margin-bottom:8px">Write to <code style="background:rgba(110,193,228,.1);padding:2px 8px;border-radius:5px;font-family:var(--font);font-size:12px">~/.hermes/skills/github.md</code> so Hermes understands your workflow:</p>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Deploy Key for CI/CD (Read-Only)</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">markdown</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># GitHub Workflow for Hermes</span>
-- Use feature branches: <span class="fn">feature/</span><span class="var">&lt;name&gt;</span>
-- PR title format: <span class="str">"[type] Brief description"</span>
-- Always run CI before merging
-- Squash-merge to main
-- Delete branch after merge</pre>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Generate a deploy key for Hermes</span>
+ssh-keygen -t ed25519 -C "hermes-agent@firm" -f ~/.ssh/hermes-deploy -N ""
+cat ~/.ssh/hermes-deploy.pub
+<span class="cmt"># → Add this as a deploy key in GitHub → repo → Settings → Deploy Keys</span>
+
+<span class="cmt"># Configure SSH to use it</span>
+cat >> ~/.ssh/config << 'EOF'
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/hermes-deploy
+EOF</pre>
   </div>
-  <div class="callout success"><strong>✅ Ready</strong> Hermes can now create repos, open PRs, run CI checks, and manage issues.</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Clone Your Repos</h3>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Clone all org repos (example)</span>
+mkdir -p ~/code
+cd ~/code
+gh repo list your-org --limit 50 --json nameWithOwner -q '.[].nameWithOwner' | \
+  while read repo; do gh repo clone "$repo"; done</pre>
+  </div>
+
+  <div class="callout info"><strong>🤖 Hermes + GitHub</strong>Once connected, you can ask Hermes to: <em>"Open a PR with this fix"</em>, <em>"Run the CI pipeline"</em>, <em>"Show me the last 10 issues"</em>, <em>"Review this PR and leave comments"</em>. Hermes will use <code>gh</code> for all GitHub operations.</div>
 </section>
 
 <!-- ===== PHASE 5 ===== -->
 <section id="phase5">
-  <h2><span class="num">5</span> Office Suite & Collaboration <span class="phase-tag">Phase 5/6</span></h2>
-  <p class="sub">Set up document collaboration so Hermes can generate and edit .docx, .xlsx, and .pptx files your team can access.</p>
+  <h2><span class="num">5</span> Office Suite & File Access <span class="phase-tag">phase 5/6</span></h2>
+  <p class="sub">Document editing, shared drives, and easy file access for the engineering team.</p>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Install OnlyOffice</h3>
-  <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Docker-based OnlyOffice Document Server</span>
-sudo docker run -d --restart unless-stopped \
-  -p 8088:80 \
-  --name onlyoffice \
-  onlyoffice/documentserver
-
-<span class="cmt"># Or install LibreOffice directly</span>
-sudo apt install libreoffice libreoffice-writer</pre>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(52,211,153,.15)">📄</div>
+      <h3>OnlyOffice</h3>
+      <p>Self-hosted document server with real-time collaboration. Compatible with .docx, .xlsx, .pptx. Accessible via web browser.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(108,138,255,.15)">🔄</div>
+      <h3>Syncthing</h3>
+      <p>Live peer-to-peer file sync between the PC and team laptops. No cloud middleman. Encrypted in transit.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(167,139,250,.15)">🗄️</div>
+      <h3>Samba / NFS</h3>
+      <p>Traditional network share. Mounts as a drive on Windows/Mac/Linux. Accessible from LibreOffice, Excel, Word.</p>
+    </div>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Install Hermes Office Skills</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option: Samba Share (Simplest)</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Python packages for document generation</span>
-pip install python-docx openpyxl python-pptx</pre>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre>sudo apt install samba -y
+sudo mkdir -p /srv/shared/{documents,spreadsheets,presentations,projects}
+sudo chmod -R 775 /srv/shared
+sudo chown -R :users /srv/shared
+
+sudo tee -a /etc/samba/smb.conf << 'EOF'
+
+[Shared]
+   path = /srv/shared
+   browseable = yes
+   read only = no
+   guest ok = no
+   valid users = @users
+   force group = users
+   create mask = 0664
+   directory mask = 0775
+EOF
+
+<span class="cmt"># Add users</span>
+sudo smbpasswd -a your-username
+sudo systemctl restart smbd</pre>
   </div>
 
-  <div class="callout info"><strong>📋 Tip</strong> Hermes can generate invoices, reports, project plans, and slide decks on demand — just describe what you need.</div>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Hermes + Office Documents</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Hermes can generate office documents directly via its skills:</p>
+  <div class="code-block">
+    <div class="header"><span class="lang">Hermes Prompt</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre>"Create a professional project proposal in .docx format with a table of contents,
+  headings, a budget table in .xlsx, and a 5-slide presentation in .pptx.
+  Save them to /srv/shared/documents/project-alpha/"</pre>
+  </div>
 </section>
 
 <!-- ===== PHASE 6 ===== -->
 <section id="phase6">
-  <h2><span class="num">6</span> Automated Backups <span class="phase-tag">Phase 6/6</span></h2>
-  <p class="sub">Protect your Hermes config, models, skills, memory, and documents with live sync and encrypted versioned backups.</p>
+  <h2><span class="num">6</span> Backup Protocols <span class="phase-tag">phase 6/6</span></h2>
+  <p class="sub">Automated, encrypted, versioned backups. Restic to local + remote storage. The 3-2-1 rule.</p>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Live Sync (Syncthing)</h3>
+  <div class="callout info"><strong>📐 The 3-2-1 Rule</strong>3 copies of your data, on 2 different media, with 1 copy off-site. This setup achieves all three.</div>
+
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>sudo apt install syncthing
-sudo systemctl enable --now syncthing@$(whoami)
-<span class="cmt"># Open http://localhost:8384 and add devices/folders</span></pre>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Install Restic</span>
+sudo apt install restic -y
+
+<span class="cmt"># Initialize backup repository (local + offsite)</span>
+restic init --repo /mnt/backup/restic-repo
+<span class="cmt"># Set a strong encryption password and save it in a password manager!</span>
+
+<span class="cmt"># If you have a remote backup target (S3, Backblaze, rsync.net):</span>
+<span class="cmt"># restic init --repo s3:https://s3.eu-central-1.amazonaws.com/your-bucket/hermes-backup</span></pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Versioned Backups (Restic + Backblaze B2)</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Backup Script</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Save as <code>~/backup.sh</code> — covers code, config, and documents:</p>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>sudo apt install restic
-restic init --repo b2:your-bucket-name:/
-restic backup ~/.hermes ~/documents
-<span class="cmt"># Or S3-compatible, SFTP, local disk</span>
-restic snapshots</pre>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt">#!/bin/bash</span>
+<span class="cmt"># ~/backup.sh — Daily backup for Hermes engineering PC</span>
+set -e
+
+REPO="/mnt/backup/restic-repo"
+PASSWORD_FILE="$HOME/.restic-password"
+BACKUP_PATHS=(
+  "$HOME/code"           <span class="cmt"># All repositories</span>
+  "$HOME/.hermes"        <span class="cmt"># Hermes config, memory, skills</span>
+  "/srv/shared"          <span class="cmt"># Shared office documents</span>
+  "$HOME/.ssh"           <span class="cmt"># SSH keys (encrypted)</span>
+  "/etc/ollama"          <span class="cmt"># Ollama config</span>
+  "/etc/nginx"           <span class="cmt"># Web server config if used</span>
+)
+
+<span class="cmt"># Prune policy: keep 7 daily, 4 weekly, 6 monthly</span>
+restic -r "$REPO" \
+  --password-file "$PASSWORD_FILE" \
+  backup "${BACKUP_PATHS[@]}" \
+  --exclude="**/node_modules" \
+  --exclude="**/.venv" \
+  --exclude="**/__pycache__" \
+  --tag "daily-$(date +%Y-%m-%d)"
+
+restic -r "$REPO" \
+  --password-file "$PASSWORD_FILE" \
+  forget --keep-daily 7 --keep-weekly 4 --keep-monthly 6 \
+  --prune
+
+<span class="cmt"># Optional: copy to off-site</span>
+<span class="cmt"># restic copy --from-repo "$REPO" --to-repo s3:https://s3....</span>
+
+echo "✅ Backup complete: $(date)"</pre>
   </div>
 
-  <h3 style="color:#fff;font-size:16px;margin:24px 0 8px;font-weight:600">Automate with Cron</h3>
   <div class="code-block">
-    <div class="header"><span class="lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Daily backup at 2 AM</span>
-crontab -e
-<span class="cmt"># Add: 0 2 * * * restic backup ~/.hermes ~/documents --tag daily</span></pre>
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre>chmod +x ~/backup.sh
+
+<span class="cmt"># Set up daily cron</span>
+(crontab -l 2>/dev/null; echo "0 2 * * * /home/user/backup.sh >> /var/log/hermes-backup.log 2>&1") | crontab -
+
+<span class="cmt"># Or use Hermes' own cron system:</span>
+<span class="cmt"># > "Schedule: daily backup at 2 AM"</span></pre>
   </div>
 
-  <div class="callout success"><strong>✅ Protected</strong> Everything is synced live to your team's machines and versioned off-site daily.</div>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">What's Excluded (and Why)</h3>
+  <table class="cmd-table">
+    <tr><th>Path</th><th>Why</th><th>How to Handle</th></tr>
+    <tr><td><code>~/.ollama/models/</code></td><td>Model weights are huge (20-200 GB), can be re-downloaded</td><td>Skip — just backup <code>/etc/ollama</code> config</td></tr>
+    <tr><td><code>node_modules/</code></td><td>Easily reinstalled, bloated backups</td><td>Excluded via <code>--exclude</code></td></tr>
+    <tr><td><code>.venv/ / __pycache__</code></td><td>Python cache, recreatable</td><td>Excluded via <code>--exclude</code></td></tr>
+  </table>
+
+  <div class="callout success"><strong>✅ Done</strong>Verify with: <code>restic -r /mnt/backup/restic-repo snapshots</code></div>
 </section>
 
 <!-- ===== HERMES HELPS ===== -->
 <section id="hermes-helps">
-  <h2><span class="num">?</span> Hermes Help Prompts <span class="phase-tag">templates</span></h2>
-  <p class="sub">Copy-paste these prompts to accelerate common tasks. Hermes understands plain English — just describe what you need.</p>
+  <h2><span class="num">✦</span> Using Hermes to Help Set Up</h2>
+  <p class="sub">Once Hermes is running (even on a smaller model), you can delegate setup tasks to it. Here are ready-to-use prompts.</p>
 
-  <div class="prompt-card"><p>"Install and configure Syncthing, then add devices A, B, and C to the Engineering share."</p></div>
-  <div class="prompt-card"><p>"Create a GitHub repo called <code>project-x</code> with a Python license, a README describing the project, and a basic CI workflow."</p></div>
-  <div class="prompt-card"><p>"Generate an invoice for client ACME Corp — 40 hours of consulting at $150/h, payment due in 30 days. Output as .docx."</p></div>
-  <div class="prompt-card"><p>"Create a presentation about our Local AI infrastructure: architecture, benefits, costs. 5 slides. Output as .pptx."</p></div>
-  <div class="prompt-card"><p>"Add my SSH key to authorized_keys, disable root login, change SSH port to 2222."</p></div>
-  <div class="prompt-card"><p>"Clone repo <code>org/repo</code>, create a feature branch <code>feature/new-pipeline</code>, add a headers guard, commit, and push."</p></div>
+  <div class="prompt-card">
+    <p>"Install Ollama, pull the MiniMax M3 model, create a 64K context variant called m3-64k, and keep it loaded with a 24-hour keep-alive. Verify the API endpoint works with a test curl call."</p>
+  </div>
+  <div class="prompt-card">
+    <p>"Configure my ~/.hermes/config.yaml to use the local M3 model at http://localhost:11434/v1 as the default provider. Set a fallback to a smaller model for simple chat. Validate the config with hermes --version and a test session."</p>
+  </div>
+  <div class="prompt-card">
+    <p>"Clone all repositories from our GitHub org 'your-org-name' into ~/code/. Set up gh CLI auth if needed, then verify every clone. Show me a summary of what was cloned."</p>
+  </div>
+  <div class="prompt-card">
+    <p>"Set up Restic backups. Create ~/backup.sh that backs up ~/code, ~/.hermes, /srv/shared, and ~/.ssh to /mnt/backup/restic-repo. Exclude node_modules and .venv. Schedule it with cron at 2 AM daily. Add a retention policy of 7 daily, 4 weekly, 6 monthly."</p>
+  </div>
+  <div class="prompt-card">
+    <p>"Create a Samba share at /srv/shared with documents, spreadsheets, presentations, and projects subdirectories. Set the correct permissions (775, group ownership). Add my user to the share with smbpasswd."</p>
+  </div>
+  <div class="prompt-card">
+    <p>"Configure SSH on this machine: enable the service, set up ufw to allow SSH only from 192.168.1.0/24, disable password auth (only allow key-based), and create a deploy key for GitHub use."</p>
+  </div>
+  <div class="prompt-card">
+    <p>"Generate a report of system health: disk usage, GPU temperature, memory usage, running services (ollama, ssh, samba), and last backup time. Format it as a professional .docx file."</p>
+  </div>
+</section>
+
+<!-- ===== STRATEGY: PERFORMANCE & MODEL STRATEGY ===== -->
+<section id="strategy">
+  <h2><span class="num">⚡</span> Performance, Capacity & Model Strategy <span class="phase-tag">reference</span></h2>
+  <p class="sub">Tokens per second, concurrent users, API search, missing capabilities, and how to supplement gaps with specialized local models.</p>
+
+  <div class="callout info"><strong>🎯 Key Insight</strong>MiniMax M3 is a frontier model locally — but no single model does everything well. The best setup uses <strong>model routing</strong>: M3 for heavy lifting, smaller specialized models for specific tasks. This section covers exactly how.</div>
+
+  <!-- ─── 1. TOKENS PER SECOND ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">1. Tokens Per Second — What to Expect</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">M3's MoE architecture activates only 23B of its 428B parameters per token — making it faster than its total parameter count suggests. Real-world throughput depends heavily on hardware and serving framework.</p>
+
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Hardware</th><th>Quant</th><th>Framework</th><th>Generation (tok/s)</th><th>Prompt Eval (tok/s)</th><th>Notes</th></tr>
+    <tr><td>1× RTX 4090 (24 GB)</td><td>—</td><td>—</td><td colspan="3" style="color:var(--orange);text-align:center">M3 too large — needs 2× 3090 minimum (48 GB)</td></tr>
+    <tr><td>2× RTX 3090 (48 GB)</td><td>Q2_K</td><td>Ollama/llama.cpp</td><td>~4-6</td><td>~80-120</td><td>Aggressive quant, limited context</td></tr>
+    <tr><td>2× RTX 4090 (48 GB)</td><td>Q3_K_M</td><td>Ollama/llama.cpp</td><td>~6-9</td><td>~120-180</td><td>Good quality, 32K context feasible</td></tr>
+    <tr><td>2× RTX 5090 (64 GB)</td><td>Q4_K_M</td><td>Ollama/llama.cpp</td><td>~10-14</td><td>~200-300</td><td>Best quality/speed balance</td></tr>
+    <tr><td>1× H100 (80 GB)</td><td>Q4_K_M</td><td>vLLM</td><td>~30-45</td><td>~600-1,000</td><td>Production, ~300 concurrent users</td></tr>
+    <tr><td>1× H200 (141 GB)</td><td>FP8</td><td>vLLM</td><td>~50-65</td><td>~1,500-2,500</td><td>NVIDIA benchmark: ~3,000 tok/s aggregate</td></tr>
+    <tr><td>8× H100 (640 GB)</td><td>FP8</td><td>vLLM (TP=8)</td><td>~180-250</td><td>~5,000-8,000</td><td>Enterprise, disaggregated prefill</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn"><strong>⚠️ M3 VRAM Reality</strong>M3's 428B parameters require serious hardware. At Q4_K_M (~220 GB), you need a multi-GPU workstation or enterprise GPU. If you don't have that, consider running M3 via <a href="https://toolhalla.ai/blog/minimax-m3-local-vram-requirements" style="color:var(--accent)" target="_blank">hosted inference</a> while keeping smaller models fully local. See the Gemma 4 section below for viable alternatives.</div>
+
+  <div class="callout info"><strong>📊 vLLM vs Ollama — When to Use Which</strong><br>
+  <strong>Ollama (single user, interactive):</strong> ~8s cold start, ~5-35 tok/s, 1.6 GB less VRAM. Better for ad-hoc use and smaller models.<br>
+  <strong>vLLM (multi-user, production):</strong> ~22s cold start, ~78+ tok/s, 8-9× aggregate throughput under concurrency. PagedAttention + continuous batching.<br>
+  <strong>Rule of thumb:</strong> 1-2 users → Ollama. 3+ users or API serving → vLLM.</div>
+
+  <!-- ─── 2. CONCURRENT USERS ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">2. Max Concurrent Users</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">How many team members can use Hermes simultaneously depends on your serving framework, context lengths, and whether M3 is the only model or one of several.</p>
+
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Setup</th><th>Framework</th><th>Concurrent Users</th><th>Experience</th></tr>
+    <tr><td>Single user, direct Ollama</td><td>Ollama</td><td>1</td><td>Snappy, ~8-12 tok/s generation</td></tr>
+    <tr><td>Small team (Ollama)</td><td>Ollama + parallel</td><td>2-3</td><td>Noticeable slowdown, 4-6 tok/s each</td></tr>
+    <tr><td>Small team (vLLM)</td><td>vLLM, 2× 4090</td><td>4-6</td><td>~6-10 tok/s each, good for coding</td></tr>
+    <tr><td>Team + vLLM (H100)</td><td>vLLM, 1× H100</td><td>~300</td><td>Sustained ~3,000 aggregate tok/s</td></tr>
+    <tr><td>Team + model routing</td><td>vLLM + Ollama</td><td>10-20</td><td>M3 for complex tasks, smaller models for chat/editing</td></tr>
+  </table>
+  </div>
+
+  <div class="callout success"><strong>💡 Smart Concurrency</strong>For an engineering firm with 3-5 developers: route simple queries (git status, file search, quick edits) to a Gemma 4 E4B or Llama 3.2 3B that handles 10+ concurrent requests easily. Only route complex reasoning, code review, and agentic tasks to M3. This gives you <strong>responsive low-latency for daily work</strong> + M3 power when you need it.</div>
+
+  <!-- ─── 3. API SEARCH & TOOL CAPABILITIES ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">3. Web Search & API Considerations</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Hermes has built-in web search (<code>web_search</code>, <code>web_extract</code>, <code>browser</code> tools), but they don't come from the local model — they come from Hermes' tool system. Here's what you need to know:</p>
+
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Capability</th><th>Source</th><th>Local Model Needed?</th><th>Requires Internet?</th><th>Notes</th></tr>
+    <tr><td><code>web_search</code></td><td>Firecrawl <span style="color:var(--text2)">(default)</span> / Google / SearXNG</td><td>❌ No — tool runs independently</td><td>✅ Yes — needs API endpoint</td><td>Free tier: 500 queries/mo. Self-host via SearXNG for offline teams</td></tr>
+    <tr><td><code>web_extract</code></td><td>Firecrawl / direct HTTP</td><td>❌ No</td><td>✅ Yes</td><td>Extracts markdown from URLs. Also works on PDFs</td></tr>
+    <tr><td><code>browser</code> (full)</td><td>Browserbase / Playwright</td><td>❌ No</td><td>✅ Yes</td><td>Full browser automation, screenshots, vision</td></tr>
+    <tr><td><code>vision_analyze</code></td><td>Auxiliary vision model</td><td>✅ Needs vision-capable model</td><td>⚠️ Local is possible</td><td>M3 is natively multimodal — can handle images</td></tr>
+    <tr><td><code>text_to_speech</code></td><td>Edge TTS / OpenAI TTS</td><td>❌ No</td><td>✅ Yes (Edge needs net)</td><td>Edge TTS is free, locally cacheable</td></tr>
+    <tr><td><code>image_gen</code></td><td>Stable Diffusion / Flux / DALL-E</td><td>Diffusion models run locally</td><td>⚠️ Optional</td><td>Run Flux or SDXL locally with ComfyUI</td></tr>
+  </table>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Search Configuration Options</h3>
+
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(110,193,228,.15)">🌐</div>
+      <h3>Nous Portal (Easiest)</h3>
+      <p><code>hermes setup --portal</code> → OAuth login → web search, TTS, browser, image gen work immediately. ~$10-20/mo. Best for single-user or small team.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(110,193,228,.15)">🔍</div>
+      <h3>Self-Hosted Search</h3>
+      <p>Run SearXNG locally: <code>docker run -d -p 4000:8080 searxng/searxng</code>. Configure <code>web_search</code> to point to it. 100% offline, no API costs.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(110,193,228,.15)">⚙️</div>
+      <h3>Custom API Key</h3>
+      <p>Configure Google Programmable Search, Brave Search, or Bing in config.yaml. Set <code>HERMES_WEB_SEARCH_API_KEY</code> in <code>.env</code>. Per-query pricing (~$0.001 each).</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(110,193,228,.15)">📎</div>
+      <h3>MCP Servers</h3>
+      <p>Hermes supports MCP (Model Context Protocol). Connect to any MCP server for extended capabilities: custom databases, internal wikis, Jira, Slack.</p>
+    </div>
+  </div>
+
+  <!-- ─── 4. MISSING CAPABILITIES ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">4. Missing Capabilities & How to Fill Them</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Even with M3, some capabilities need supplementary models or external services. Here's the complete gap analysis:</p>
+
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Capability</th><th>M3 Native?</th><th>Gap</th><th>Solution</th><th>Minimal Setup</th></tr>
+    <tr><td>**Vision (images)**</td><td>✅ Native multimodal</td><td>None — M3 handles images natively</td><td>Just configure <code>auxiliary.vision.provider</code> to use M3</td><td><code>provider: "custom"</code> with same base_url</td></tr>
+    <tr><td>**Vision (video)**</td><td>⚠️ Frame-based</td><td>Needs frame extraction before analysis</td><td>Hermes extracts frames with FFmpeg, M3 analyzes them</td><td><code>sudo apt install ffmpeg</code></td></tr>
+    <tr><td>**Audio / Speech**</td><td>❌ Text only</td><td>No native ASR or TTS</td><td>Whisper (local) for STT. Edge TTS (free) for TTS</td><td><code>ollama pull whisper:large-v3</code></td></tr>
+    <tr><td>**Web Search**</td><td>❌ Tool-based</td><td>Not a search capability gap — it's a tool gap</td><td>SearXNG (local) or Nous Portal</td><td>Docker SearXNG on port 4000</td></tr>
+    <tr><td>**Code Execution**</td><td>❌ Hermes handles it</td><td>Hermes' terminal tool does this, not the model</td><td>Nothing needed — it's built in</td><td>Already works</td></tr>
+    <tr><td>**Image Generation**</td><td>❌ No</td><td>No image output capability</td><td>Flux.1-schnell (local, fast, Apache 2.0)</td><td><code>pip install diffusers</code></td></tr>
+    <tr><td>**Structured Outputs**</td><td>✅ Good</td><td>JSON mode works, grammar-constrained</td><td>No action needed</td><td>Use <code>"response_format": {"type": "json_object"}</code></td></tr>
+    <tr><td>**Function Calling**</td><td>✅ Excellent</td><td>Native tool-use, agentic coding</td><td>No action needed</td><td>Hermes handles tool definitions</td></tr>
+    <tr><td>**1M Context**</td><td>✅ MSA sparse attention</td><td>Local VRAM limits practical context</td><td>Use M3 API for truly long documents</td><td>64K local, API for 512K+</td></tr>
+  </table>
+  </div>
+
+  <div class="callout warn"><strong>🔌 Vision Setup for M3</strong>Even though M3 is natively multimodal, Hermes needs explicit config to use it for vision. In <code>~/.hermes/config.yaml</code>, add:
+  <pre style="background:rgba(0,0,0,.3);padding:8px;border-radius:6px;margin-top:8px;font-size:12px">auxiliary:
+  vision:
+    provider: "custom"
+    base_url: "http://localhost:11434/v1"
+    model: "m3-64k"
+    api_key: "no-key"</pre>
+  Then verify: <code>hermes config check</code> should show vision as configured.</div>
+
+  <!-- ─── 5. SPECIALIZED SMALLER MODELS ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">5. Supplementing with Specialized Local Models</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">The most powerful setup uses <strong>multiple models in parallel</strong>. M3 handles complex reasoning and agentic tasks; smaller models handle speed-critical, domain-specific, or low-latency work. Here's the recommended model fleet:</p>
+
+  <div class="callout info"><strong>🏆 Gemma 4 — The Ideal Companion Family</strong>Google's Gemma 4 (Apache 2.0, June 2026) spans 5 sizes from 2B to 31B, all with native function calling and 128-256K context. Every size runs on consumer hardware. Their built-in thinking mode and multi-token prediction (MTP) make them ideal Hermes companions.</div>
+
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Model</th><th>Params</th><th>VRAM (Q4)</th><th>Speed (tok/s)</th><th>Best For</th><th>Expertise</th></tr>
+    <tr><td><strong>Gemma 4 E2B</strong></td><td>2.3B eff.</td><td>2.9 GB</td><td>~100-150</td><td>Quick edits, git ops, file search, typo fixing</td><td>Bilingual DA/EN, fast function calling</td></tr>
+    <tr><td><strong>Gemma 4 E4B</strong></td><td>4.5B eff.</td><td>4.5 GB</td><td>~70-100</td><td>Simple chat, summarization, text classification</td><td>Audio input (native), 128K context</td></tr>
+    <tr><td><strong>Gemma 4 12B</strong></td><td>11.95B</td><td>6.7 GB</td><td>~45-65</td><td>RAG, document analysis, embedded vision</td><td>Encoder-free multimodal (vision+audio)</td></tr>
+    <tr><td><strong>Gemma 4 26B A4B</strong></td><td>25.2B total</td><td>14.4 GB</td><td>~35-50</td><td>Code generation, reasoning, agent fallback</td><td>MoE (only 4B active), AIME 88.3%</td></tr>
+    <tr><td><strong>Gemma 4 31B</strong></td><td>30.7B</td><td>17.5 GB</td><td>~20-35</td><td>Heavy reasoning without M3 overhead</td><td>MMLU 85.2%, Codeforces 2150 ELO</td></tr>
+    <tr><td><strong>Qwen 3.5 32B</strong></td><td>32B</td><td>18 GB</td><td>~25-40</td><td>Strong coding alternative</td><td>Top-tier coding + tool use</td></tr>
+    <tr><td><strong>Llama 3.2 3B</strong></td><td>3B</td><td>2.2 GB</td><td>~120-160</td><td>Ultra-fast routing, smallest viable fallback</td><td>Minimal VRAM, always hot</td></tr>
+  </table>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Pull & Configure the Companion Models</h3>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Pull Gemma 4 models via Ollama</span>
+ollama pull gemma4:E2B
+ollama pull gemma4:E4B
+ollama pull gemma4:12B
+ollama pull gemma4:26B-A4B
+ollama pull gemma4:31B
+
+<span class="cmt"># Pull other useful companions</span>
+ollama pull llama3.2:3b       <span class="cmt"># Ultra-fast fallback</span>
+ollama pull whisper:large-v3  <span class="cmt"># Speech-to-text (1.6 GB)</span></pre>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Hermes Config: Multi-Model Routing</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">This configuration routes tasks to the right model automatically:</p>
+  <div class="code-block">
+    <div class="header"><span class="lang">YAML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># ~/.hermes/config.yaml — Multi-Model Setup</span>
+model:
+  <span class="cmt"># Primary: M3 for heavy agentic work</span>
+  default: "m3-64k"
+  provider: "custom"
+  base_url: "http://localhost:11434/v1"
+  api_key: "no-key"
+
+  <span class="cmt"># Fallback tiers — Hermes tries each in order on failure</span>
+  fallback:
+    - provider: "custom"
+      base_url: "http://localhost:11434/v1"
+      model: "gemma4:26B-A4B"
+      api_key: "no-key"
+    - provider: "custom"
+      base_url: "http://localhost:11434/v1"
+      model: "gemma4:E4B"
+      api_key: "no-key"
+    - provider: "custom"
+      base_url: "http://localhost:11434/v1"
+      model: "llama3.2:3b"
+      api_key: "no-key"
+
+<span class="cmt"># Vision — use M3's native multimodal</span>
+auxiliary:
+  vision:
+    model: "m3-64k"
+    provider: "custom"
+    base_url: "http://localhost:11434/v1"
+    api_key: "no-key"
+  compression:
+    model: "gemma4:E4B"
+    provider: "custom"
+    base_url: "http://localhost:11434/v1"
+    api_key: "no-key"
+
+<span class="cmt"># Web search via self-hosted SearXNG</span>
+web_search:
+  provider: "custom"
+  base_url: "http://localhost:4000"
+  api_key: "no-key"</pre>
+  </div>
+
+  <div class="callout success"><strong>✅ How Routing Works</strong>When Hermes hits an error or timeout with M3 (e.g., OOM on a long context), it auto-falls back through the chain: M3 → Gemma 4 26B → Gemma 4 E4B → Llama 3.2 3B. Each fallback is faster and uses less VRAM. You can also <strong>manually switch</strong>: <code>hermes config set model gemma4:26B-A4B</code> or ask Hermes: "Switch to the fast model for quick edits."</div>
+
+  <!-- ─── 6. RECOMMENDED FLEET BY HARDWARE ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">6. Recommended Model Fleet by Hardware</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">No matter what hardware you have, there's a viable multi-model setup. These configurations let you run Hermes locally with the best cost/quality tradeoff for your situation.</p>
+
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(52,211,153,.15)">💻</div>
+      <h3>Budget (16-24 GB GPU)</h3>
+      <p><strong>1× RTX 3060/4060</strong><br>
+      <span style="color:var(--accent)">Lead:</span> Gemma 4 12B<br>
+      <span style="color:var(--accent)">Fast:</span> Gemma 4 E4B<br>
+      <span style="color:var(--accent)">Ultra:</span> Llama 3.2 3B<br>
+      <span style="color:var(--text2);font-size:12px">~6.7 GB + 4.5 GB = 11.2 GB total</span></p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(110,193,228,.15)">⚡</div>
+      <h3>Mid-Range (24-48 GB)</h3>
+      <p><strong>1× RTX 4090 / 2× 3090</strong><br>
+      <span style="color:var(--accent)">Lead:</span> Gemma 4 31B or M3 Q2<br>
+      <span style="color:var(--accent)">Fast:</span> Gemma 4 12B<br>
+      <span style="color:var(--accent)">Special:</span> Whisper + Florence-2<br>
+      <span style="color:var(--text2);font-size:12px">~17.5 GB + 6.7 GB = 24.2 GB</span></p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(251,191,36,.15)">🏢</div>
+      <h3>Workstation (48-96 GB)</h3>
+      <p><strong>2× RTX 5090 / A6000</strong><br>
+      <span style="color:var(--accent)">Lead:</span> M3 Q4_K_M (~220 GB)<br>
+      <span style="color:var(--accent)">Fast:</span> Gemma 4 26B A4B<br>
+      <span style="color:var(--accent)">Vision:</span> M3 native<br>
+      <span style="color:var(--text2);font-size:12px">Requires tensor parallelism across GPUs</span></p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(248,113,113,.15)">☁️</div>
+      <h3>Hybrid (Local + API)</h3>
+      <p><strong>Any GPU + cloud M3</strong><br>
+      <span style="color:var(--accent)">Local:</span> Gemma 4 31B (fast, always-on)<br>
+      <span style="color:var(--accent)">Cloud:</span> M3 via API for heavy tasks<br>
+      <span style="color:var(--accent)">Best of both:</span> speed + frontier quality<br>
+      <span style="color:var(--text2);font-size:12px">~$0.50-2/hr for M3 cloud inference</span></p>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Switching Models at Runtime</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">During a Hermes session, you can switch between models on the fly:</p>
+  <div class="code-block">
+    <div class="header"><span class="lang">Hermes Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Inside a Hermes session — switch models instantly</span>
+/model gemma4:31B        <span class="cmt">→ Switch to Gemma 4 31B for heavy reasoning</span>
+/model gemma4:E4B        <span class="cmt">→ Switch to fast E4B for quick edits</span>
+/model m3-64k            <span class="cmt">→ Back to M3 for agentic tasks</span>
+/model list              <span class="cmt">→ Show all available models</span>
+
+<span class="cmt"># Or tell Hermes directly:</span>
+"Switch to the 31B model, I need complex reasoning"
+"Use the fast E4B model for this batch of file edits"</pre>
+  </div>
+
+  <div class="callout info"><strong>🧠 Gemma 4's Thinking Mode</strong>Gemma 4 has a built-in thinking/reasoning mode (like DeepSeek-R1). Enable it by adding <code>&lt;|think|&gt;</code> to the start of your system prompt in <code>~/.hermes/SOUL.md</code>. The model will output an internal reasoning block before answering. This dramatically improves performance on math, logic, and coding — but uses ~2× more tokens per query. Good for: debugging, code review, PR analysis. Skip for: quick edits, chat, summarization.</div>
+
+  <div class="callout success"><strong>✅ Bottom Line</strong>You don't need M3 to run Hermes effectively. A <strong>Gemma 4 31B + E4B</strong> combo costs ~$0 in hardware if you have a 24 GB RTX 4090, and covers 95% of what an engineering firm needs. Add M3 when you need its 1M context, agentic coding benchmarks (SWE-Bench 59%), or native multimodal reasoning. The secret to a great local AI setup isn't the biggest model — it's the <strong>right model for each task</strong>.</div>
+
 </section>
 
 <!-- ===== TROUBLESHOOTING ===== -->
 <section id="trouble">
-  <h2><span class="num">!</span> Troubleshooting <span class="phase-tag">fixes</span></h2>
-  <p class="sub">Common issues and their solutions when setting up Local AI + Hermes.</p>
+  <h2><span class="num">⚠</span> Troubleshooting</h2>
+  <p class="sub">Common issues and their fixes — from a Firmware Engineer's perspective.</p>
 
   <div class="trouble-item">
-    <summary>▸ Ollama won't start / GPU not detected</summary>
-    <div class="content">
-      <strong>Check:</strong> <code>nvidia-smi</code> must show your GPU. Install drivers: <code>sudo apt install nvidia-driver-550 nvidia-utils-550 && sudo reboot</code>. Then restart Ollama: <code>sudo systemctl restart ollama</code>. Check logs: <code>journalctl -u ollama -n 50</code>.<br><br>
-      <strong>Container mode:</strong> If running Docker, add <code>--gpus all</code> and set <code>NVIDIA_VISIBLE_DEVICES=all</code>.
-    </div>
+    <details>
+      <summary>🔥 Ollama won't start / GPU not detected</summary>
+      <div class="content">
+        <strong>Check:</strong><br>
+        <code>nvidia-smi</code> — should show your GPU and driver version.<br>
+        <code>sudo systemctl status ollama</code> — check for CUDA errors.<br><br>
+        <strong>Fix:</strong><br>
+        - Install NVIDIA container toolkit: <code>sudo apt install nvidia-container-toolkit</code><br>
+        - Ensure <code>OLLAMA_GPU_OVERHEAD=1</code> is set<br>
+        - Check <code>journalctl -u ollama -n 50 --no-pager</code> for detailled errors
+      </div>
+    </details>
   </div>
 
   <div class="trouble-item">
-    <summary>▸ Hermes can't connect to the model</summary>
-    <div class="content">
-      Verify the model API is running: <code>curl http://localhost:11434/api/tags</code>. Check <code>~/.hermes/config.yaml</code> for correct <code>base_url</code> and <code>model</code>. Try <code>hermes setup</code> again. Ensure Ollama isn't firewalled: <code>sudo ufw status</code>.
-    </div>
+    <details>
+      <summary>🐢 Model is extremely slow (under 2 t/s)</summary>
+      <div class="content">
+        <strong>Likely cause:</strong> CPU-only inference or GPU offloading isn't working.<br><br>
+        <strong>Check:</strong> <code>ollama ps</code> — see the "layers" column. You want most layers on GPU.<br>
+        <strong>Fix:</strong><br>
+        - Set <code>num_gpu 99</code> in your Modelfile and recreate the model<br>
+        - If you have multiple GPUs, enable tensor parallelism: <code>OLLAMA_NUM_GPU=2</code><br>
+        - Try a smaller quantization: <code>ollama pull minimax-m3:q3_K_M</code><br>
+        - Widen API timeout: add <code>HERMES_API_TIMEOUT=1800</code> to <code>~/.hermes/.env</code>
+      </div>
+    </details>
   </div>
 
   <div class="trouble-item">
-    <summary>▸ Model is too slow / out of memory</summary>
-    <div class="content">
-      Use a smaller quantized version (Q4_K_M or Q3_K_M). Reduce context: set <code>num_ctx 16000</code>. Close other GPU processes. For dual GPU: set <code>tensor-parallel-size 2</code>. Add more swap: <code>sudo fallocate -l 32G /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile</code>.
-    </div>
+    <details>
+      <summary>🔗 Hermes can't connect to the model</summary>
+      <div class="content">
+        <strong>Check:</strong><br>
+        - <code>curl http://localhost:11434/api/tags</code> — is Ollama reachable?<br>
+        - <code>curl http://localhost:11434/v1/chat/completions ...</code> — is the API compatible?<br>
+        - Review <code>~/.hermes/config.yaml</code> — correct <code>base_url</code> and <code>model</code> name?<br><br>
+        <strong>Fix:</strong><br>
+        - The model name in config must match <code>ollama list</code> output exactly<br>
+        - If using the custom provider, set <code>provider: "custom"</code> and <code>base_url: "http://localhost:11434/v1"</code><br>
+        - Try <code>hermes setup</code> again and choose "Custom Endpoint"
+      </div>
+    </details>
   </div>
 
   <div class="trouble-item">
-    <summary>▸ SSH connection refused</summary>
-    <div class="content">
-      Check SSH is running: <code>sudo systemctl status ssh</code>. Check firewall: <code>sudo ufw status</code>. Verify on another PC: <code>ssh user@ip</code>. Check <code>/etc/ssh/sshd_config</code> for <code>Port</code> and <code>AllowUsers</code>.
-    </div>
+    <details>
+      <summary>💾 Out of memory / OOM kills</summary>
+      <div class="content">
+        <strong>Symptoms:</strong> Ollama process killed, "killed" in journalctl, system freeze.<br><br>
+        <strong>Fix:</strong><br>
+        - Try a smaller quantization: <code>ollama pull minimax-m3:q3_K_M</code> or <code>q2_K</code><br>
+        - Reduce context size: change <code>num_ctx 64000</code> to <code>num_ctx 32000</code><br>
+        - Add swap space: <code>sudo fallocate -l 64G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile</code><br>
+        - Monitor with <code>htop</code> and <code>nvidia-smi -l 2</code>
+      </div>
+    </details>
   </div>
 
   <div class="trouble-item">
-    <summary>▸ Git / GitHub authentication fails</summary>
-    <div class="content">
-      Regenerate SSH key: <code>ssh-keygen -t ed25519 -C "your-email"</code>. Add to GitHub: <code>gh auth login</code> or manually in Settings → SSH keys. Test: <code>ssh -T git@github.com</code>.
-    </div>
+    <details>
+      <summary>🌐 Can't SSH from outside the LAN</summary>
+      <div class="content">
+        <strong>Don't:</strong> Port-forward SSH directly to the internet.<br><br>
+        <strong>Do:</strong><br>
+        - <strong>Tailscale (recommended):</strong> <code>curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up</code><br>
+        - <strong>WireGuard:</strong> <code>sudo apt install wireguard && wg-quick up ./wg0.conf</code><br>
+        - <strong>Cloudflare Tunnel:</strong> <code>sudo cloudflared tunnel create</code> + route to SSH via dashboard<br><br>
+        Then SSH to <code>user@tailscale-ip</code> or via the tunnel.
+      </div>
+    </details>
   </div>
 
   <div class="trouble-item">
-    <summary>▸ pip install fails (externally-managed-environment)</summary>
-    <div class="content">
-      Ubuntu 24.04 blocks system pip. Use a virtual environment: <code>python3 -m venv ~/venv && source ~/venv/bin/activate</code>. Or install <code>pipx</code> and use <code>pipx install</code>. For system-wide: add <code>export PIP_REQUIRE_VIRTUALENV=false</code> (not recommended). Or use <code>uv</code>: <code>pip install uv && uv pip install python-docx openpyxl python-pptx</code>.
+    <details>
+      <summary>🐙 GitHub CLI auth fails</summary>
+      <div class="content">
+        <strong>Fix:</strong><br>
+        - Run <code>gh auth login</code> with the <code>--web</code> flag for device flow<br>
+        - Ensure SSH agent is running: <code>eval "$(ssh-agent -s)" && ssh-add ~/.ssh/hermes-deploy</code><br>
+        - Test: <code>ssh -T git@github.com</code> — should say "Hi your-org/repo"<br>
+        - If using HTTPS instead: <code>gh auth setup-git</code>
+      </div>
+    </details>
+  </div>
+
+  <div class="trouble-item">
+    <details>
+      <summary>🔄 Restore from a backup</summary>
+      <div class="content">
+        <code>
+          <span class="cmt"># List snapshots</span><br>
+          restic -r /mnt/backup/restic-repo snapshots<br><br>
+          <span class="cmt"># Restore latest to a directory</span><br>
+          restic -r /mnt/backup/restic-repo restore latest --target ~/restore/<br><br>
+          <span class="cmt"># Or mount and browse like a filesystem</span><br>
+          restic -r /mnt/backup/restic-repo mount /mnt/restore-mount
+        </code>
+      </div>
+    </details>
+  </div>
+
+  <div class="trouble-item">
+    <details>
+      <summary>📡 Hermes Telegram/Discord gateway won't connect</summary>
+      <div class="content">
+        <strong>Fix:</strong><br>
+        - Enable the platform in <code>~/.hermes/config.yaml</code>:<br>
+        <pre style="background:transparent;padding:0;font-size:12px">platforms:
+  telegram:
+    enabled: true
+    token: "YOUR_BOT_TOKEN"
+  discord:
+    enabled: true
+    token: "YOUR_BOT_TOKEN"</pre>
+        - Run <code>hermes gateway</code><br>
+        - Check <code>hermes gateway --status</code> for connection errors<br>
+        - Ensure the PC has outbound HTTPS access to Telegram/Discord APIs
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ===== ANIMATED TERMINAL ===== -->
+<section id="demo" style="max-width:900px">
+  <h2><span class="num">▶</span> Live Demo</h2>
+  <p class="sub">A simulated Hermes session using the local M3 model — showing what you can expect.</p>
+
+  <div class="term-demo">
+    <div class="term-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="title">hermes — local model (m3-64k)</span>
+    </div>
+    <div class="term-body" id="termBody">
+      <span class="prompt">user@pc:~$</span> hermes<br>
+      <span class="output" style="color:var(--accent);font-weight:600">◆ Hermes Agent — Local Mode (m3-64k)</span><br>
+      <span class="output">Type /help for commands, /model to switch models.</span><br><br>
+      <span class="prompt">You:</span> <span class="typing-line d1" style="color:var(--text)">List all Python files in ~/code and count lines of code</span><br>
+      <span class="output typing-line d2" style="color:var(--green)">◆ Scanning 12 repositories...</span><br>
+      <span class="output typing-line d3">  project-alpha/     → 2,340 lines  (12 files)<br>  firmware-core/     → 8,912 lines  (34 files)<br>  web-dashboard/     → 3,456 lines  (18 files)<br>  ─────────────────────────────<br>  Total: 14,708 lines  (64 files)</span><br>
+      <span class="prompt" style="animation:typing 1s steps(10) 7s forwards;overflow:hidden;white-space:nowrap;display:inline-block;width:0">You:</span><span style="opacity:0;animation:blink 1s step-end 7s infinite;display:inline-block">▌</span>
     </div>
   </div>
 </section>
 
 <!-- ===== FOOTER ===== -->
 <footer>
-  <p>Built for <a href="https://nousresearch.com" target="_blank">Nous Research</a>'s Hermes Agent · <a href="https://hermes-agent.nousresearch.com/docs" target="_blank">Docs</a></p>
-  <p style="margin-top:8px;font-size:11px">Engineering firm setup guide · Open-source · Self-hosted · No cloud dependencies</p>
-  <p style="margin-top:20px;font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase">NIL Technology Edition</p>
+  <p>Built with Hermes Agent · <a href="https://hermes-agent.nousresearch.com" target="_blank">Documentation</a> · <a href="https://github.com/nousresearch/hermes-agent" target="_blank">GitHub</a></p>
+  <p style="margin-top:8px">MiniMax M3 · Gemma 4 · Ollama · vLLM · SearXNG · Restic</p>
+  <p style="margin-top:16px;opacity:.5">NIL Technology Edition — designed by Hermes Agent running in Fable Mode.</p>
 </footer>
 
 <script>
 function copyCode(btn) {
-  const block = btn.closest('.code-block');
-  const pre = block.querySelector('pre');
-  let text = pre.textContent;
-  // Remove syntax highlighting markers
-  text = text.replace(/<[^>]+>/g, '');
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.textContent.replace(/^[\s\u00A0]+|[\s\u00A0]+$/g, '');
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 2000);
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   }).catch(() => {
-    // Fallback for older browsers
     const ta = document.createElement('textarea');
     ta.value = text;
     document.body.appendChild(ta);
@@ -602,13 +1091,17 @@ function copyCode(btn) {
     document.body.removeChild(ta);
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 2000);
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
 }
-</script>
 
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+    document.querySelector('.links')?.classList.remove('open');
+  });
+});
+</script>
 </body>
 </html>
