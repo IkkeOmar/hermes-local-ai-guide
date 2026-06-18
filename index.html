@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hermes Agent × Local AI — Engineering Firm Setup Guide</title>
+<title>Hermes Agent × Local AI — Multi-Model Setup Guide</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
   :root {
@@ -18,6 +18,7 @@
     --green: #34d399;
     --orange: #fbbf24;
     --red: #f87171;
+    --purple: #a78bfa;
     --font: 'JetBrains Mono','SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
     --font-body: 'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   }
@@ -34,7 +35,7 @@
   nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.3px}
   nav .logo svg{width:28px;height:28px}
   nav .logo span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  nav .links{display:flex;gap:16px;font-size:13px}
+  nav .links{display:flex;gap:16px;font-size:13px;flex-wrap:wrap;justify-content:flex-end}
   nav .links a{color:var(--text2);text-decoration:none;transition:color .2s;white-space:nowrap}
   nav .links a:hover{color:var(--text)}
   .nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
@@ -46,6 +47,7 @@
   .hero-bg .orb:nth-child(1){width:500px;height:500px;background:var(--accent);top:-10%;left:-10%;animation-delay:0s}
   .hero-bg .orb:nth-child(2){width:400px;height:400px;background:var(--accent2);bottom:-5%;right:-5%;animation-delay:-7s}
   .hero-bg .orb:nth-child(3){width:300px;height:300px;background:var(--green);top:40%;left:50%;animation-delay:-14s}
+  .hero-bg .orb:nth-child(4){width:350px;height:350px;background:var(--purple);top:10%;right:20%;animation-delay:-3s}
   @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.95)}}
   .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:16px;position:relative}
   .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -57,7 +59,7 @@
   .scroll-indicator{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text2);font-size:11px;font-family:var(--font);letter-spacing:2px;text-transform:uppercase;animation:bounce 2s ease-in-out infinite}
   @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 
-  /* ─── ARCHITECTURE DIAGRAM ─── */
+  /* ─── ARCHITECTURE ─── */
   .arch-section{padding:60px 24px;max-width:1100px;margin:0 auto}
   .arch-section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:12px}
   .arch-section h2 .num{display:inline-block;width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;font-size:14px;font-weight:800;text-align:center;line-height:32px;margin-right:10px;vertical-align:middle}
@@ -71,7 +73,7 @@
 
   /* ─── SECTION COMMON ─── */
   section{padding:60px 24px;max-width:900px;margin:0 auto}
-  section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+  section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
   section h2 .phase-tag{font-size:11px;font-family:var(--font);color:var(--accent);background:rgba(108,138,255,.12);padding:2px 10px;border-radius:100px;font-weight:500}
   section > p.sub{color:var(--text2);margin-bottom:32px}
   section:not(:last-of-type){border-bottom:1px solid var(--border)}
@@ -98,6 +100,7 @@
   .callout.warn{background:rgba(251,191,36,.08);border-color:var(--orange)}
   .callout.success{background:rgba(52,211,153,.08);border-color:var(--green)}
   .callout.err{background:rgba(248,113,113,.08);border-color:var(--red)}
+  .callout.purple{background:rgba(167,139,250,.08);border-color:var(--purple)}
   .callout strong{display:block;margin-bottom:4px;font-size:13px;text-transform:uppercase;letter-spacing:.5px}
   .callout code{background:rgba(255,255,255,.08);padding:1px 6px;border-radius:4px;font-family:var(--font);font-size:12px}
 
@@ -140,16 +143,25 @@
   .term-demo .term-body .output{color:var(--text2)}
   .term-demo .term-body .cursor{display:inline-block;width:8px;height:16px;background:var(--text);animation:blink 1s step-end infinite;vertical-align:text-bottom;margin-left:2px}
   @keyframes blink{50%{opacity:0}}
-  .typing-line{overflow:hidden;white-space:nowrap;animation:typing 2s steps(40,end) forwards;display:inline-block;max-width:100%}
-  .typing-line.d1{animation-delay:.3s;width:0}
-  .typing-line.d2{animation-delay:2.5s;width:0}
-  .typing-line.d3{animation-delay:4.5s;width:0}
-  @keyframes typing{to{width:100%}}
 
-  /* ─── PROMPT TEMPLATES ─── */
+  /* ─── ROADMAP ─── */
+  .roadmap{position:relative;padding-left:40px;margin:24px 0}
+  .roadmap::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--green),var(--purple))}
+  .roadmap-item{position:relative;margin-bottom:28px;padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+  .roadmap-item::before{content:attr(data-step);position:absolute;left:-34px;top:16px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#000;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:var(--font)}
+  .roadmap-item h4{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--accent)}
+  .roadmap-item p{font-size:13px;color:var(--text2);line-height:1.6}
+
+  /* ─── PROMPT CARDS ─── */
   .prompt-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;margin:12px 0;position:relative}
   .prompt-card::before{content:'Prompt';position:absolute;top:-8px;left:14px;background:var(--bg);padding:0 6px;font-size:10px;font-family:var(--font);color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
   .prompt-card p{font-size:14px;line-height:1.6;color:var(--text2);font-style:italic}
+
+  /* ─── SPEC TABLE ─── */
+  .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .spec-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+  .spec-item .label{font-size:11px;font-family:var(--font);color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+  .spec-item .value{font-size:14px;font-weight:600;margin-top:2px;color:var(--text)}
 
   /* ─── FOOTER ─── */
   footer{text-align:center;padding:60px 24px 40px;color:var(--text2);font-size:12px;border-top:1px solid var(--border);margin-top:40px}
@@ -161,6 +173,7 @@
     nav .links.open{display:flex}
     .nav-toggle{display:block}
     .arch-grid{grid-template-columns:1fr}
+    .spec-grid{grid-template-columns:1fr}
     section{padding:40px 16px}
     .hero{padding:100px 16px 60px}
     .code-block pre{font-size:12px}
@@ -180,28 +193,29 @@
     <a href="#prereqs">Prerequisites</a>
     <a href="#phase1">Phase 1</a>
     <a href="#phase2">Phase 2</a>
-    <a href="#phase3">Phase 3</a>
-    <a href="#phase4">Phase 4</a>
-    <a href="#phase5">Phase 5</a>
-    <a href="#phase6">Phase 6</a>
-    <a href="#hermes-helps">Hermes Helps</a>
-    <a href="#strategy">Strategy</a>
+    <a href="#phase3">SSH</a>
+    <a href="#beelink">Beelink</a>
+    <a href="#models">Model Strategy</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#nilt">NILT Access</a>
     <a href="#trouble">Troubleshooting</a>
   </div>
 </nav>
 
 <!-- ===== HERO ===== -->
 <div class="hero">
-  <div class="hero-bg"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
-  <h1>Hermes Agent × <span>Local AI</span></h1>
-  <p>A complete, copy-pasteable guide to running Hermes Agent with a local MiniMax M3 model on your engineering firm's PC — with SSH access, GitHub, office tools, and automated backups.</p>
+  <div class="hero-bg"><div class="orb"></div><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+  <h1>Hermes Agent × <span>Multi-Model AI</span></h1>
+  <p>A complete guide to running Hermes Agent with <strong>multiple open-source models</strong> — GLM 5.2, MiniMax M3, and more — on a single powerful PC. From hardware choice to full agentic setup with remote access.</p>
   <div class="hero-badges">
     <span class="live">● Live</span>
     <span>Open-Source</span>
-    <span>No API Keys</span>
-    <span>Self-Hosted</span>
+    <span>GLM 5.2</span>
+    <span>MiniMax M3</span>
+    <span>Beelink GTR9</span>
     <span>1M Context</span>
     <span>Multi-Model</span>
+    <span>NILT Ready</span>
   </div>
   <div class="scroll-indicator">Scroll ↓</div>
 </div>
@@ -209,37 +223,37 @@
 <!-- ===== ARCHITECTURE ===== -->
 <div class="arch-section">
   <h2><span class="num">↗</span> Architecture Overview</h2>
-  <p>Everything runs on a single powerful PC. You access it from your laptop, phone, or another machine via SSH, Telegram, or a web dashboard.</p>
+  <p>Everything runs on a single powerful PC — either a GPU workstation or a Beelink mini PC with 128 GB unified memory. You access it from any device via SSH, Telegram, Discord, or a web dashboard. Models run locally, via cloud API, or both in a hybrid setup.</p>
   <div class="arch-grid">
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(167,139,250,.15)">🧬</div>
+      <h3>GLM 5.2 (Z.ai / Local)</h3>
+      <p><strong>#1 open-source reasoning model.</strong> 744B MoE (40B active), 1M token context, MIT license. Runs via Z.ai cloud API on any hardware, or self-host on enterprise GPUs. Coding, reasoning, long-horizon agent tasks.</p>
+    </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(108,138,255,.15)">🧠</div>
       <h3>MiniMax M3 (Local LLM)</h3>
-      <p>428B parameter MoE model (23B active). Served via vLLM or Ollama on the PC. Provides reasoning, tool-calling, and code generation without any cloud API.</p>
+      <p>428B parameter MoE (23B active). Served via Ollama or vLLM. Fits in 128 GB RAM at Q2_K (~107 GB). Reasoning, tool-calling, code generation — no cloud API needed.</p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(167,139,250,.15)">⚡</div>
       <h3>Hermes Agent</h3>
-      <p>The self-improving agent that connects to the local model. Handles file editing, terminal commands, web browsing, delegation, and cross-session memory.</p>
+      <p>The self-improving agent that connects to any model. Handles file editing, terminal commands, web browsing, delegation, and cross-session memory. Provider-agnostic — switch between models freely.</p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(52,211,153,.15)">🔗</div>
       <h3>SSH + Gateway</h3>
-      <p>SSH from any device on the network. Optional Telegram/Discord gateway for remote input. Hermes CLI works identically over SSH.</p>
+      <p>SSH from any device on the network. Optional Telegram/Discord gateway for remote input. Hermes CLI works identically over SSH — whether you're on-site or at NILT.</p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(251,191,36,.15)">📁</div>
       <h3>File Access & Backups</h3>
-      <p>Syncthing for live sync, Restic for encrypted versioned backups, and a shared network drive for office suite document access.</p>
+      <p>Syncthing for live sync, Restic for encrypted versioned backups, Samba/NFS network share. Access your code and documents from any machine.</p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(248,113,113,.15)">🐙</div>
       <h3>GitHub Integration</h3>
-      <p>Hermes connects to GitHub via SSH deploy keys and the GitHub CLI. Can open PRs, run CI checks, create repos, and manage issues.</p>
-    </div>
-    <div class="arch-card">
-      <div class="icon" style="background:rgba(86,182,194,.15)">📋</div>
-      <h3>Office Suite</h3>
-      <p>OnlyOffice or LibreOffice for document editing. Shared directories across the team. Hermes generates .docx, .xlsx, .pptx files on demand.</p>
+      <p>Connects via SSH deploy keys + GitHub CLI. Open PRs, run CI checks, create repos, manage issues — all through Hermes.</p>
     </div>
   </div>
 </div>
@@ -247,8 +261,9 @@
 <!-- ===== PREREQUISITES ===== -->
 <section id="prereqs">
   <h2><span class="num">0</span> Prerequisites <span class="phase-tag">checklist</span></h2>
-  <p class="sub">What you'll need before starting. This guide assumes a good PC — 32 GB+ RAM, an NVIDIA GPU with 12 GB+ VRAM, and Ubuntu 24.04 LTS.</p>
+  <p class="sub">What you need before starting. Two viable paths exist: a GPU workstation (NVIDIA) or a unified-memory mini PC (AMD). Choose the one that fits your budget and use case.</p>
 
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Path A: Dedicated GPU Workstation (High Throughput)</h3>
   <div class="cmd-table-wrapper">
   <table class="cmd-table">
     <tr><th>Component</th><th>Recommended</th><th>Minimum</th></tr>
@@ -257,13 +272,28 @@
     <tr><td>Storage</td><td>2 TB NVMe SSD</td><td>500 GB NVMe</td></tr>
     <tr><td>CPU</td><td>AMD Ryzen 9 / Intel i9 (16+ cores)</td><td>8 cores</td></tr>
     <tr><td>OS</td><td>Ubuntu 24.04 LTS (or Debian 12)</td><td>Ubuntu 22.04</td></tr>
-    <tr><td>Network</td><td>Static IP or Tailscale</td><td>DHCP + local DNS</td></tr>
   </table>
   </div>
 
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Path B: Beelink GTR9 Pro (Unified Memory — Silent, Compact)</h3>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Component</th><th>Spec</th><th>Notes</th></tr>
+    <tr><td>CPU</td><td>AMD Ryzen AI Max+ 395</td><td>16 Zen 5 cores (32 threads), Radeon 8060S iGPU (40 CU RDNA 3.5), XDNA 2 NPU 50+ TOPS</td></tr>
+    <tr><td>RAM</td><td>128 GB LPDDR5X-8000</td><td><strong>Unified memory:</strong> configurable as 96 GB VRAM + 32 GB RAM, or 64+64. Key advantage for LLMs.</td></tr>
+    <tr><td>Storage</td><td>2 TB PCIe 4.0 NVMe (expandable to 8 TB)</td><td>Dual M.2 slots</td></tr>
+    <tr><td>Network</td><td>10GbE + 2.5GbE + WiFi 7 + BT 5.4</td><td>Dual 10GbE for fast backups and multi-PC access</td></tr>
+    <tr><td>Size</td><td>Mini PC (~1.5L volume)</td><td>Silent, no fans at idle, fits on any desk</td></tr>
+    <tr><td>Price</td><td>~€1.999</td><td>3-4 concurrent Hermes sessions. Perfect for engineering firms.</td></tr>
+  </table>
+  </div>
+
+  <div class="callout success"><strong>💡 Why Beelink GTR9 Pro for AI?</strong>The 128 GB unified memory means the iGPU can use up to 96 GB as VRAM for large models. This is the <strong>only sub-€2000 hardware</strong> that can run MiniMax M3 (Q2_K, ~107 GB), GLM 5.1-FP8, and multiple Gemma 4 models simultaneously — without a dedicated GPU. Silent, compact, and powerful enough for a small engineering team.</div>
+
   <ul class="checklist">
     <li>Ubuntu 24.04 LTS installed and updated: <code>sudo apt update && sudo apt upgrade -y</code></li>
-    <li>NVIDIA drivers + CUDA: <code>sudo apt install nvidia-driver-550 nvidia-utils-550</code></li>
+    <li>NVIDIA drivers (if using GPU): <code>sudo apt install nvidia-driver-550 nvidia-utils-550</code></li>
+    <li>AMD ROCm / Vulkan (if using Beelink): <code>sudo apt install rocm-hip-libraries</code></li>
     <li>Docker + Docker Compose: <code>sudo apt install docker.io docker-compose-v2</code></li>
     <li>Git + Curl + Python3: <code>sudo apt install git curl python3 python3-pip python3-venv</code></li>
     <li>Node.js 20+: <code>curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash - && sudo apt install -y nodejs</code></li>
@@ -273,14 +303,20 @@
 
 <!-- ===== PHASE 1 ===== -->
 <section id="phase1">
-  <h2><span class="num">1</span> Set Up the Local AI <span class="phase-tag">phase 1/6</span></h2>
-  <p class="sub">Install Ollama, pull MiniMax M3, and verify the model works — then configure it to serve an OpenAI-compatible API.</p>
+  <h2><span class="num">1</span> Set Up Local Models <span class="phase-tag">phase 1/6</span></h2>
+  <p class="sub">Install Ollama, pull your chosen model(s), create high-context variants, and verify the API. You can run multiple models on the same machine — Hermes will route between them.</p>
+
+  <div class="callout info"><strong>🎯 Model Choice Guide</strong><br>
+  <strong>Beelink GTR9 Pro (128 GB):</strong> MiniMax M3 Q2_K (~107 GB), Gemma 4 31B, DeepSeek 70B, GLM-5 via API<br>
+  <strong>GPU Workstation (48+ GB VRAM):</strong> MiniMax M3 Q4_K_M, GLM-5.2 via API or FP8 on enterprise GPUs, Gemma 4 fleet<br>
+  <strong>Any hardware:</strong> GLM 5.2 via Z.ai cloud API — works on everything, 1M context, no local GPU needed</div>
 
   <div class="phase-track">
     <span class="phase-dot active">1.1 Install Ollama</span>
-    <span class="phase-dot">1.2 Pull M3</span>
+    <span class="phase-dot">1.2 Pull Models</span>
     <span class="phase-dot">1.3 64K Context</span>
-    <span class="phase-dot">1.4 Verify API</span>
+    <span class="phase-dot">1.4 GLM API</span>
+    <span class="phase-dot">1.5 Verify</span>
   </div>
 
   <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.1 — Install Ollama</h3>
@@ -292,93 +328,154 @@ ollama --version
 curl http://localhost:11434/api/tags</pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.2 — Pull MiniMax M3</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.2 — Pull Your Models</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Choose what fits your hardware. You can pull all of them — Ollama manages VRAM/RAM automatically.</p>
+
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Pull the M3 model (Quantized Q4_K_M — best quality/speed balance)</span>
-ollama pull minimax-m3:q4_K_M
+    <pre><span class="cmt"># Option A: MiniMax M3 (428B, needs ~107 GB at Q2_K)</span>
+<span class="cmt"># Best for: Full agentic Hermes, code generation, complex reasoning</span>
+ollama pull minimax-m3:q2_K
 
-<span class="cmt"># Verify it loaded correctly</span>
-ollama ps</pre>
+<span class="cmt"># Option B: GLM-5 (744B, needs 2-bit quant ~241 GB — requires enterprise GPU)</span>
+<span class="cmt"># If you have 8× H100 or similar: ollama pull glm-5:q2_K</span>
+
+<span class="cmt"># Option C: Gemma 4 models (Apache 2.0, fits any hardware)</span>
+ollama pull gemma4:26B-A4B    <span class="cmt"># MoE 26B, 14 GB — excellent all-rounder</span>
+ollama pull gemma4:31B        <span class="cmt"># 31B, 17.5 GB — heavy reasoning</span>
+ollama pull gemma4:E4B        <span class="cmt"># 4.5B, fast companion model</span>
+
+<span class="cmt"># Option D: Lightweight fallback</span>
+ollama pull llama3.2:3b       <span class="cmt"># 3B, 2 GB — always hot, ultra-fast</span></pre>
   </div>
 
-  <div class="callout info"><strong>⚡ Alternative: vLLM</strong>For production serving with higher throughput, use vLLM instead: <code>pip install vllm && python -m vllm.entrypoints.openai.api_server --model minimax/minimax-m3 --tensor-parallel-size 2 --port 8000</code></div>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.3 — Create 64K Context Variants</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Default Ollama context is 2048 tokens. Hermes needs 64K+ for agentic tasks. Create a custom variant for each model you pulled.</p>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.3 — Create 64K Context Model</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Default Ollama context is 2048 tokens — way too small. Hermes needs 64K+ for agentic tasks.</p>
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>cat > ~/Modelfile-m3-64k << 'EOF'
-FROM minimax-m3:q4_K_M
+    <pre><span class="cmt"># For MiniMax M3</span>
+cat > ~/Modelfile-m3-64k << 'EOF'
+FROM minimax-m3:q2_K
 PARAMETER num_ctx 64000
 PARAMETER num_gpu 99
 EOF
+ollama create m3-64k -f ~/Modelfile-m3-64k
 
-ollama create m3-64k -f ~/Modelfile-m3-64k</pre>
+<span class="cmt"># For Gemma 4 26B</span>
+cat > ~/Modelfile-g4-64k << 'EOF'
+FROM gemma4:26B-A4B
+PARAMETER num_ctx 64000
+PARAMETER num_gpu 99
+EOF
+ollama create g4-64k -f ~/Modelfile-g4-64k
+
+<span class="cmt"># Verify both exist</span>
+ollama list</pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.4 — Verify the API Works</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.4 — Connect GLM 5.2 via Cloud API</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">GLM 5.2 (744B) is too large even for 128 GB RAM at full precision. But it's <strong>available as a cloud API</strong> from Z.ai with the full 1M context — and it's MIT open-source. This works on <strong>any</strong> machine, including the Beelink.</p>
+
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>curl http://localhost:11434/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "m3-64k",
-    "messages": [{"role": "user", "content": "Say hello and identify yourself."}],
-    "max_tokens": 100
-  }'</pre>
+    <pre><span class="cmt"># Create a Hermes profile for GLM 5.2</span>
+hermes profile create glm
+
+<span class="cmt"># Configure it to use Z.ai's API</span>
+hermes -p glm config set model.default "glm-5.2"
+hermes -p glm config set model.provider "zai"
+hermes -p glm config set model.base_url "https://api.z.ai/api/coding/paas/v4"
+hermes -p glm config set model.context_length 1000000
+
+<span class="cmt"># Set your API key (get one at https://z.ai)</span>
+export Z_AI_API_KEY="z_ai_your_key_here"
+
+<span class="cmt"># Smoke test</span>
+hermes -p glm -z "Say ready and nothing else."</pre>
   </div>
 
-  <div class="callout success"><strong>✅ Done</strong>If you see a JSON response with "MiniMax" in the content, your local AI is running.</div>
+  <div class="callout info"><strong>🧬 GLM 5.2 Specs</strong>744B total / 40B active parameters — MoE architecture. MIT license (fully open-source). 1M token context window. Best-in-class on SWE-Bench and coding benchmarks. ~$0.95/M input tokens via API. When enterprise hardware is available, self-host via vLLM or SGLang.</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">1.5 — Verify All APIs Work</h3>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Test local Ollama models</span>
+curl http://localhost:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model": "m3-64k", "messages": [{"role": "user", "content": "Identify yourself."}], "max_tokens": 100}'
+
+<span class="cmt"># Test GLM 5.2 cloud API</span>
+hermes -p glm -z "What model are you running?"
+
+<span class="cmt"># List all available</span>
+hermes -p glm model       <span class="cmt"># → Should show glm-5.2</span>
+ollama list               <span class="cmt"># → Should show your local models</span></pre>
+  </div>
+
+  <div class="callout success"><strong>✅ Done</strong>You now have a multi-model setup: local models for speed and privacy + GLM 5.2 cloud for heavy reasoning with 1M context.</div>
 </section>
 
 <!-- ===== PHASE 2 ===== -->
 <section id="phase2">
   <h2><span class="num">2</span> Install & Configure Hermes <span class="phase-tag">phase 2/6</span></h2>
-  <p class="sub">Install Hermes Agent, configure it to use your local M3 model, and set up skill management.</p>
+  <p class="sub">Install Hermes Agent, configure it for multi-model routing, and set up automatic fallback between your local models and GLM 5.2.</p>
 
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Install Hermes via the recommended method</span>
+    <pre><span class="cmt"># Install Hermes</span>
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | sh
-
-<span class="cmt"># Or via pip</span>
-<span class="cmt"># pip install hermes-agent</span>
-
-<span class="cmt"># Verify</span>
 hermes --version</pre>
   </div>
 
-  <div class="callout info"><strong>🔧 Configuration</strong>Edit <code>~/.hermes/config.yaml</code> to point to your local M3 model. Two ways to do this:</div>
+  <div class="callout info"><strong>🔧 Multi-Model Configuration</strong>This config routes tasks to the best model automatically. Local M3 or Gemma for everyday work, GLM 5.2 for complex reasoning and long context tasks.</div>
 
   <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option A: Interactive Setup</h3>
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>hermes setup
+    <pre><span class="cmt"># Run the setup wizard</span>
+hermes setup
 <span class="cmt"># → Select "Custom Endpoint"</span>
 <span class="cmt"># → Enter: http://localhost:11434/v1</span>
-<span class="cmt"># → API key: no-key (or any placeholder)</span>
-<span class="cmt"># → Model: m3-64k</span></pre>
+<span class="cmt"># → Model: m3-64k (or g4-64k for Gemma 4)</span></pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option B: Manual Config</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option B: Manual Multi-Model Config</h3>
   <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Write this to <code>~/.hermes/config.yaml</code>:</p>
   <div class="code-block">
     <div class="header"><span class="lang">YAML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>model:
+  <span class="cmt"># Primary: local model for everyday agentic work</span>
   default: "m3-64k"
   provider: "custom"
   base_url: "http://localhost:11434/v1"
+  api_key: "no-key"
 
-<span class="cmt"># Optional: Fallback to a faster model for simple queries</span>
+  <span class="cmt"># Fallback chain — Hermes tries each on failure or overload</span>
   fallback:
+    - provider: "custom"
+      base_url: "http://localhost:11434/v1"
+      model: "g4-64k"
+      api_key: "no-key"
+    - provider: "custom"
+      base_url: "http://localhost:11434/v1"
+      model: "gemma4:E4B"
+      api_key: "no-key"
+
+<span class="cmt"># GLM 5.2 profile (separate, switch with hermes profile use glm)</span>
+<span class="cmt"># Create via: hermes profile create glm</span>
+<span class="cmt"># Then:     hermes -p glm config set ...</span>
+
+<span class="cmt"># Keep local models hot</span>
+auxiliary:
+  compression:
+    model: "gemma4:E4B"
     provider: "custom"
     base_url: "http://localhost:11434/v1"
-    model: "llama3.2:3b"</pre>
+    api_key: "no-key"</pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Keep the Model Loaded</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Ollama unloads models after 5 minutes of inactivity. Keep M3 hot:</p>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Keep Models Loaded (24h keep-alive)</h3>
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>sudo mkdir -p /etc/systemd/system/ollama.service.d
@@ -390,50 +487,92 @@ sudo systemctl daemon-reload
 sudo systemctl restart ollama</pre>
   </div>
 
-  <div class="callout success"><strong>✅ Done</strong>Run <code>hermes</code> to start a session. It should respond using your local M3 with zero cloud calls.</div>
+  <div class="callout success"><strong>✅ Done</strong>Run <code>hermes</code> — should respond using your local model. Switch to <code>hermes -p glm</code> for GLM 5.2 with 1M context.</div>
 </section>
 
 <!-- ===== PHASE 3 ===== -->
 <section id="phase3">
   <h2><span class="num">3</span> SSH + Network Access <span class="phase-tag">phase 3/6</span></h2>
-  <p class="sub">Make the PC accessible from your laptop, phone, or a colleague's machine — securely.</p>
+  <p class="sub">Make the PC accessible from any machine — your laptop, phone, or a colleague's workstation at NILT.</p>
 
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Install & enable SSH server</span>
+    <pre><span class="cmt"># Install & enable SSH</span>
 sudo apt install openssh-server
 sudo systemctl enable --now ssh
 
-<span class="cmt"># Set up firewall — only allow SSH from your LAN</span>
-sudo ufw allow from 192.168.1.0/24 to any port 22 proto tcp
-<span class="cmt"># (Adjust subnet to match your network)</span></pre>
+<span class="cmt"># Firewall: only allow LAN</span>
+sudo ufw allow from 192.168.1.0/24 to any port 22 proto tcp</pre>
   </div>
 
-  <div class="callout warn"><strong>🔒 Security</strong>Never expose SSH directly to the internet. Use a VPN (Tailscale, WireGuard) or a bastion host for remote access. Add your SSH key instead of using passwords:</div>
+  <div class="callout warn"><strong>🔒 Security</strong>Never expose SSH directly to the internet. Use Tailscale, WireGuard, or Cloudflare Tunnel for remote access. Add your SSH key:</div>
 
   <div class="code-block">
     <div class="header"><span class="lang">Bash (from your laptop)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>ssh-copy-id user@hermes-pc-ip
-<span class="cmt"># Then disable password auth on the PC:</span>
+<span class="cmt"># Disable password auth on the PC:</span>
 sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-<span class="cmt"># Or: sudo sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config</span>
 sudo systemctl restart ssh</pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Using Hermes over SSH</h3>
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># From your laptop — Hermes runs on the PC, you control it remotely</span>
+    <pre><span class="cmt"># From your laptop — full Hermes experience over SSH</span>
 ssh user@hermes-pc
 hermes
-<span class="cmt"># Now you're talking to Hermes via the local M3. All files are on the PC.</span></pre>
-  </div>
+<span class="cmt"># Now you're talking to Hermes via the local model. All files on the PC.</span>
 
-  <div class="callout success"><strong>✅ Done</strong>Test with: <code>ssh user@hermes-pc "ollama ps && hermes --version"</code></div>
+<span class="cmt"># Quick test</span>
+ssh user@hermes-pc "ollama ps && hermes --version"</pre>
+  </div>
 </section>
 
-<!-- ===== PHASE 4 ===== -->
-<section id="phase4">
+<!-- ===== BEELINK DEEP DIVE ===== -->
+<section id="beelink">
+  <h2><span class="num">🖥</span> Beelink GTR9 Pro — Deep Dive <span class="phase-tag">reference</span></h2>
+  <p class="sub">The Beelink GTR9 Pro with Ryzen AI Max+ 395 is the most cost-effective hardware for running Hermes + multiple local models in a compact, silent form factor. Here's exactly how it works and what to expect.</p>
+
+  <div class="spec-grid">
+    <div class="spec-item"><div class="label">CPU</div><div class="value">AMD Ryzen AI Max+ 395 — 16C/32T Zen 5</div></div>
+    <div class="spec-item"><div class="label">iGPU</div><div class="value">Radeon 8060S — 40 CU RDNA 3.5</div></div>
+    <div class="spec-item"><div class="label">NPU</div><div class="value">XDNA 2 — 50+ TOPS</div></div>
+    <div class="spec-item"><div class="label">RAM</div><div class="value">128 GB LPDDR5X-8000 (unified)</div></div>
+    <div class="spec-item"><div class="label">Storage</div><div class="value">2 TB NVMe (expandable to 8 TB)</div></div>
+    <div class="spec-item"><div class="label">Network</div><div class="value">10GbE + 2.5GbE + WiFi 7</div></div>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Unified Memory Split — The Secret Sauce</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">The 128 GB is <strong>shared</strong> between CPU and GPU. You configure how much goes to VRAM via BIOS:</p>
+
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Configuration</th><th>VRAM (iGPU)</th><th>System RAM</th><th>Best For</th></tr>
+    <tr><td>Default</td><td>32 GB</td><td>96 GB</td><td>General use, Gemma 4 31B, DeepSeek 70B</td></tr>
+    <tr><td>AI Optimized</td><td>64 GB</td><td>64 GB</td><td>MiniMax M3 Q2_K (~107 GB with RAM assist), dual models</td></tr>
+    <tr><td>Max VRAM</td><td>96 GB</td><td>32 GB</td><td>Largest possible model: M3 Q2_K in VRAM, GLM-5.1 via API</td></tr>
+  </table>
+  </div>
+
+  <div class="callout info"><strong>💡 Practical Tip</strong>Set VRAM to 96 GB in BIOS before installing Ollama. Then Ollama's llama.cpp backend uses the iGPU via Vulkan for inference. The 32 GB remaining system RAM is plenty for Hermes, Docker, and daily OS tasks.</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Expected Performance (Beelink GTR9 Pro)</h3>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Model</th><th>Quant</th><th>RAM Used</th><th>Expected tok/s</th><th>Notes</th></tr>
+    <tr><td>Gemma 4 31B</td><td>Q4_K_M</td><td>~18 GB</td><td>~8-14</td><td>Snappy, great for daily Hermes use</td></tr>
+    <tr><td>Gemma 4 26B A4B</td><td>Q4_K_M</td><td>~14 GB</td><td>~12-20</td><td>Best speed/quality balance</td></tr>
+    <tr><td>DeepSeek 70B</td><td>Q3_K_M</td><td>~35 GB</td><td>~5-8</td><td>Beelink marketed for this specifically</td></tr>
+    <tr><td>MiniMax M3</td><td>Q2_K</td><td>~107 GB</td><td>~3-6</td><td>Fits at 96 GB VRAM + RAM assist. Slow but capable.</td></tr>
+    <tr><td>Qwen 3.5 32B</td><td>Q4_K_M</td><td>~18 GB</td><td>~10-16</td><td>Strong coding alternative</td></tr>
+    <tr><td>GLM 5.2</td><td>Cloud API</td><td>0 GB</td><td>~40-80</td><td>No local VRAM needed — full 1M context via API</td></tr>
+  </table>
+  </div>
+
+  <div class="callout success"><strong>🎯 Recommended Beelink Setup</strong>Run <strong>Gemma 4 26B A4B</strong> as your primary always-on model (~14 GB, 12-20 tok/s, excellent for 95% of tasks). Route complex coding and long-context tasks to <strong>GLM 5.2 via API</strong>. Pull MiniMax M3 Q2_K for offline use when you need 100% air-gapped operation. This gives you speed + capability + privacy, all on a silent €2k mini PC.</div>
+</section>
+
+<!-- ===== GitHub + Office + Backups (Phase 4-6, unchanged structure) ===== -->
+<section id="github">
   <h2><span class="num">4</span> GitHub Integration <span class="phase-tag">phase 4/6</span></h2>
   <p class="sub">Connect Hermes to your org's GitHub. Deploy keys, CLI auth, and CI/CD pipeline setup.</p>
 
@@ -446,23 +585,18 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githu
   sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 sudo apt update && sudo apt install gh -y
 
-<span class="cmt"># Authenticate (device flow)</span>
+<span class="cmt"># Authenticate</span>
 gh auth login --hostname github.com --git-protocol ssh
-
-<span class="cmt"># Verify</span>
-gh auth status
-gh repo list</pre>
+gh auth status</pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Deploy Key for CI/CD (Read-Only)</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Deploy Key for CI/CD</h3>
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Generate a deploy key for Hermes</span>
-ssh-keygen -t ed25519 -C "hermes-agent@firm" -f ~/.ssh/hermes-deploy -N ""
+    <pre>ssh-keygen -t ed25519 -C "hermes-agent@firm" -f ~/.ssh/hermes-deploy -N ""
 cat ~/.ssh/hermes-deploy.pub
-<span class="cmt"># → Add this as a deploy key in GitHub → repo → Settings → Deploy Keys</span>
+<span class="cmt"># → Add as deploy key in GitHub repo → Settings → Deploy Keys</span>
 
-<span class="cmt"># Configure SSH to use it</span>
 cat >> ~/.ssh/config << 'EOF'
 Host github.com
   HostName github.com
@@ -471,21 +605,10 @@ Host github.com
 EOF</pre>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Clone Your Repos</h3>
-  <div class="code-block">
-    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Clone all org repos (example)</span>
-mkdir -p ~/code
-cd ~/code
-gh repo list your-org --limit 50 --json nameWithOwner -q '.[].nameWithOwner' | \
-  while read repo; do gh repo clone "$repo"; done</pre>
-  </div>
-
-  <div class="callout info"><strong>🤖 Hermes + GitHub</strong>Once connected, you can ask Hermes to: <em>"Open a PR with this fix"</em>, <em>"Run the CI pipeline"</em>, <em>"Show me the last 10 issues"</em>, <em>"Review this PR and leave comments"</em>. Hermes will use <code>gh</code> for all GitHub operations.</div>
+  <div class="callout info"><strong>🤖 Hermes + GitHub</strong>Ask Hermes: <em>"Open a PR with this fix"</em>, <em>"Run CI pipeline"</em>, <em>"Show issues"</em> — Hermes uses <code>gh</code> for all GitHub operations.</div>
 </section>
 
-<!-- ===== PHASE 5 ===== -->
-<section id="phase5">
+<section id="office">
   <h2><span class="num">5</span> Office Suite & File Access <span class="phase-tag">phase 5/6</span></h2>
   <p class="sub">Document editing, shared drives, and easy file access for the engineering team.</p>
 
@@ -493,7 +616,7 @@ gh repo list your-org --limit 50 --json nameWithOwner -q '.[].nameWithOwner' | \
     <div class="arch-card">
       <div class="icon" style="background:rgba(52,211,153,.15)">📄</div>
       <h3>OnlyOffice</h3>
-      <p>Self-hosted document server with real-time collaboration. Compatible with .docx, .xlsx, .pptx. Accessible via web browser.</p>
+      <p>Self-hosted document server with real-time collaboration. Compatible with .docx, .xlsx, .pptx. Web browser access.</p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(108,138,255,.15)">🔄</div>
@@ -507,7 +630,7 @@ gh repo list your-org --limit 50 --json nameWithOwner -q '.[].nameWithOwner' | \
     </div>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Option: Samba Share (Simplest)</h3>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Samba Share Setup</h3>
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
     <pre>sudo apt install samba -y
@@ -516,7 +639,6 @@ sudo chmod -R 775 /srv/shared
 sudo chown -R :users /srv/shared
 
 sudo tee -a /etc/samba/smb.conf << 'EOF'
-
 [Shared]
    path = /srv/shared
    browseable = yes
@@ -528,392 +650,267 @@ sudo tee -a /etc/samba/smb.conf << 'EOF'
    directory mask = 0775
 EOF
 
-<span class="cmt"># Add users</span>
 sudo smbpasswd -a your-username
 sudo systemctl restart smbd</pre>
   </div>
-
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Hermes + Office Documents</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Hermes can generate office documents directly via its skills:</p>
-  <div class="code-block">
-    <div class="header"><span class="lang">Hermes Prompt</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>"Create a professional project proposal in .docx format with a table of contents,
-  headings, a budget table in .xlsx, and a 5-slide presentation in .pptx.
-  Save them to /srv/shared/documents/project-alpha/"</pre>
-  </div>
 </section>
 
-<!-- ===== PHASE 6 ===== -->
-<section id="phase6">
+<section id="backups">
   <h2><span class="num">6</span> Backup Protocols <span class="phase-tag">phase 6/6</span></h2>
   <p class="sub">Automated, encrypted, versioned backups. Restic to local + remote storage. The 3-2-1 rule.</p>
 
-  <div class="callout info"><strong>📐 The 3-2-1 Rule</strong>3 copies of your data, on 2 different media, with 1 copy off-site. This setup achieves all three.</div>
+  <div class="callout info"><strong>📐 Beelink Note</strong>With the dual 10GbE ports, backup to a NAS or second NVMe at 1 GB/s. The 2 TB NVMe is fast enough that backup doesn't slow down model inference.</div>
 
   <div class="code-block">
     <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Install Restic</span>
-sudo apt install restic -y
-
-<span class="cmt"># Initialize backup repository (local + offsite)</span>
+    <pre>sudo apt install restic -y
 restic init --repo /mnt/backup/restic-repo
-<span class="cmt"># Set a strong encryption password and save it in a password manager!</span>
 
-<span class="cmt"># If you have a remote backup target (S3, Backblaze, rsync.net):</span>
-<span class="cmt"># restic init --repo s3:https://s3.eu-central-1.amazonaws.com/your-bucket/hermes-backup</span></pre>
-  </div>
-
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Backup Script</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Save as <code>~/backup.sh</code> — covers code, config, and documents:</p>
-  <div class="code-block">
-    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt">#!/bin/bash</span>
-<span class="cmt"># ~/backup.sh — Daily backup for Hermes engineering PC</span>
-set -e
-
+<span class="cmt"># Create backup script at ~/backup.sh</span>
+cat > ~/backup.sh << 'SCRIPT'
+#!/bin/bash
 REPO="/mnt/backup/restic-repo"
-PASSWORD_FILE="$HOME/.restic-password"
-BACKUP_PATHS=(
-  "$HOME/code"           <span class="cmt"># All repositories</span>
-  "$HOME/.hermes"        <span class="cmt"># Hermes config, memory, skills</span>
-  "/srv/shared"          <span class="cmt"># Shared office documents</span>
-  "$HOME/.ssh"           <span class="cmt"># SSH keys (encrypted)</span>
-  "/etc/ollama"          <span class="cmt"># Ollama config</span>
-  "/etc/nginx"           <span class="cmt"># Web server config if used</span>
-)
-
-<span class="cmt"># Prune policy: keep 7 daily, 4 weekly, 6 monthly</span>
-restic -r "$REPO" \
-  --password-file "$PASSWORD_FILE" \
-  backup "${BACKUP_PATHS[@]}" \
+restic -r "$REPO" backup \
+  "$HOME/code" \
+  "$HOME/.hermes" \
+  "/srv/shared" \
+  "$HOME/.ssh" \
+  "/etc/ollama" \
   --exclude="**/node_modules" \
   --exclude="**/.venv" \
-  --exclude="**/__pycache__" \
   --tag "daily-$(date +%Y-%m-%d)"
 
-restic -r "$REPO" \
-  --password-file "$PASSWORD_FILE" \
-  forget --keep-daily 7 --keep-weekly 4 --keep-monthly 6 \
-  --prune
+restic -r "$REPO" forget \
+  --keep-daily 7 --keep-weekly 4 --keep-monthly 6 --prune
+SCRIPT
 
-<span class="cmt"># Optional: copy to off-site</span>
-<span class="cmt"># restic copy --from-repo "$REPO" --to-repo s3:https://s3....</span>
-
-echo "✅ Backup complete: $(date)"</pre>
-  </div>
-
-  <div class="code-block">
-    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre>chmod +x ~/backup.sh
-
-<span class="cmt"># Set up daily cron</span>
-(crontab -l 2>/dev/null; echo "0 2 * * * /home/user/backup.sh >> /var/log/hermes-backup.log 2>&1") | crontab -
-
-<span class="cmt"># Or use Hermes' own cron system:</span>
-<span class="cmt"># > "Schedule: daily backup at 2 AM"</span></pre>
-  </div>
-
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">What's Excluded (and Why)</h3>
-  <table class="cmd-table">
-    <tr><th>Path</th><th>Why</th><th>How to Handle</th></tr>
-    <tr><td><code>~/.ollama/models/</code></td><td>Model weights are huge (20-200 GB), can be re-downloaded</td><td>Skip — just backup <code>/etc/ollama</code> config</td></tr>
-    <tr><td><code>node_modules/</code></td><td>Easily reinstalled, bloated backups</td><td>Excluded via <code>--exclude</code></td></tr>
-    <tr><td><code>.venv/ / __pycache__</code></td><td>Python cache, recreatable</td><td>Excluded via <code>--exclude</code></td></tr>
-  </table>
-
-  <div class="callout success"><strong>✅ Done</strong>Verify with: <code>restic -r /mnt/backup/restic-repo snapshots</code></div>
-</section>
-
-<!-- ===== HERMES HELPS ===== -->
-<section id="hermes-helps">
-  <h2><span class="num">✦</span> Using Hermes to Help Set Up</h2>
-  <p class="sub">Once Hermes is running (even on a smaller model), you can delegate setup tasks to it. Here are ready-to-use prompts.</p>
-
-  <div class="prompt-card">
-    <p>"Install Ollama, pull the MiniMax M3 model, create a 64K context variant called m3-64k, and keep it loaded with a 24-hour keep-alive. Verify the API endpoint works with a test curl call."</p>
-  </div>
-  <div class="prompt-card">
-    <p>"Configure my ~/.hermes/config.yaml to use the local M3 model at http://localhost:11434/v1 as the default provider. Set a fallback to a smaller model for simple chat. Validate the config with hermes --version and a test session."</p>
-  </div>
-  <div class="prompt-card">
-    <p>"Clone all repositories from our GitHub org 'your-org-name' into ~/code/. Set up gh CLI auth if needed, then verify every clone. Show me a summary of what was cloned."</p>
-  </div>
-  <div class="prompt-card">
-    <p>"Set up Restic backups. Create ~/backup.sh that backs up ~/code, ~/.hermes, /srv/shared, and ~/.ssh to /mnt/backup/restic-repo. Exclude node_modules and .venv. Schedule it with cron at 2 AM daily. Add a retention policy of 7 daily, 4 weekly, 6 monthly."</p>
-  </div>
-  <div class="prompt-card">
-    <p>"Create a Samba share at /srv/shared with documents, spreadsheets, presentations, and projects subdirectories. Set the correct permissions (775, group ownership). Add my user to the share with smbpasswd."</p>
-  </div>
-  <div class="prompt-card">
-    <p>"Configure SSH on this machine: enable the service, set up ufw to allow SSH only from 192.168.1.0/24, disable password auth (only allow key-based), and create a deploy key for GitHub use."</p>
-  </div>
-  <div class="prompt-card">
-    <p>"Generate a report of system health: disk usage, GPU temperature, memory usage, running services (ollama, ssh, samba), and last backup time. Format it as a professional .docx file."</p>
+chmod +x ~/backup.sh
+(crontab -l 2>/dev/null; echo "0 2 * * * /home/user/backup.sh >> /var/log/hermes-backup.log 2>&1") | crontab -</pre>
   </div>
 </section>
 
-<!-- ===== STRATEGY: PERFORMANCE & MODEL STRATEGY ===== -->
-<section id="strategy">
+<!-- ===== MODEL STRATEGY ===== -->
+<section id="models">
   <h2><span class="num">⚡</span> Performance, Capacity & Model Strategy <span class="phase-tag">reference</span></h2>
-  <p class="sub">Tokens per second, concurrent users, API search, missing capabilities, and how to supplement gaps with specialized local models.</p>
+  <p class="sub">Tokens per second, concurrent users, model comparison, and how to build the optimal model fleet for your hardware.</p>
 
-  <div class="callout info"><strong>🎯 Key Insight</strong>MiniMax M3 is a frontier model locally — but no single model does everything well. The best setup uses <strong>model routing</strong>: M3 for heavy lifting, smaller specialized models for specific tasks. This section covers exactly how.</div>
+  <div class="callout purple"><strong>🧬 GLM 5.2 — The New #1 Open-Source Model</strong>As of June 2026, GLM 5.2 from Z.ai (Zhipu AI) is the top-ranked open-source reasoning model. 744B MoE (40B active), MIT license, 1M context. Leads SWE-Bench and coding benchmarks. Available via cloud API on any hardware, or self-hosted on enterprise clusters. It's the model to use when you need frontier reasoning without paying Claude/GPT prices.</div>
 
-  <!-- ─── 1. TOKENS PER SECOND ─── -->
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">Model Comparison — Which Model When?</h3>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Model</th><th>Params</th><th>Context</th><th>License</th><th>Best For</th><th>Run On Beelink?</th></tr>
+    <tr><td><strong>GLM 5.2</strong></td><td>744B MoE (40B active)</td><td>1M</td><td>MIT</td><td>Frontier reasoning, SWE-Bench, long code</td><td>✅ Via Z.ai API (cloud)</td></tr>
+    <tr><td><strong>MiniMax M3</strong></td><td>428B MoE (23B active)</td><td>256K</td><td>Open</td><td>Full agentic Hermes, local 100% offline</td><td>⚠️ Q2_K (~107 GB, ~3-6 tok/s)</td></tr>
+    <tr><td><strong>Gemma 4 26B</strong></td><td>25.2B (4B active)</td><td>128K</td><td>Apache 2.0</td><td>Best all-rounder: fast + capable</td><td>✅ Q4_K_M (~14 GB, 12-20 tok/s)</td></tr>
+    <tr><td><strong>Gemma 4 31B</strong></td><td>30.7B</td><td>128K</td><td>Apache 2.0</td><td>Heavy reasoning without API</td><td>✅ Q4_K_M (~18 GB, 8-14 tok/s)</td></tr>
+    <tr><td><strong>DeepSeek V4</strong></td><td>671B MoE</td><td>1M</td><td>MIT</td><td>Cheap cloud API ($0.30/M)</td><td>✅ Via API or 70B local distill</td></tr>
+    <tr><td><strong>Llama 3.2 3B</strong></td><td>3B</td><td>128K</td><td>Custom</td><td>Ultra-fast fallback, always hot</td><td>✅ (2 GB, ~120-160 tok/s)</td></tr>
+  </table>
+  </div>
+
   <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">1. Tokens Per Second — What to Expect</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">M3's MoE architecture activates only 23B of its 428B parameters per token — making it faster than its total parameter count suggests. Real-world throughput depends heavily on hardware and serving framework.</p>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Real-world throughput depends on hardware, quantization, and serving framework:</p>
 
   <div class="cmd-table-wrapper">
   <table class="cmd-table">
-    <tr><th>Hardware</th><th>Quant</th><th>Framework</th><th>Generation (tok/s)</th><th>Prompt Eval (tok/s)</th><th>Notes</th></tr>
-    <tr><td>1× RTX 4090 (24 GB)</td><td>—</td><td>—</td><td colspan="3" style="color:var(--orange);text-align:center">M3 too large — needs 2× 3090 minimum (48 GB)</td></tr>
-    <tr><td>2× RTX 3090 (48 GB)</td><td>Q2_K</td><td>Ollama/llama.cpp</td><td>~4-6</td><td>~80-120</td><td>Aggressive quant, limited context</td></tr>
-    <tr><td>2× RTX 4090 (48 GB)</td><td>Q3_K_M</td><td>Ollama/llama.cpp</td><td>~6-9</td><td>~120-180</td><td>Good quality, 32K context feasible</td></tr>
-    <tr><td>2× RTX 5090 (64 GB)</td><td>Q4_K_M</td><td>Ollama/llama.cpp</td><td>~10-14</td><td>~200-300</td><td>Best quality/speed balance</td></tr>
-    <tr><td>1× H100 (80 GB)</td><td>Q4_K_M</td><td>vLLM</td><td>~30-45</td><td>~600-1,000</td><td>Production, ~300 concurrent users</td></tr>
-    <tr><td>1× H200 (141 GB)</td><td>FP8</td><td>vLLM</td><td>~50-65</td><td>~1,500-2,500</td><td>NVIDIA benchmark: ~3,000 tok/s aggregate</td></tr>
-    <tr><td>8× H100 (640 GB)</td><td>FP8</td><td>vLLM (TP=8)</td><td>~180-250</td><td>~5,000-8,000</td><td>Enterprise, disaggregated prefill</td></tr>
+    <tr><th>Hardware</th><th>Model</th><th>Quant</th><th>Gen (tok/s)</th><th>Notes</th></tr>
+    <tr><td>Beelink GTR9 Pro</td><td>Gemma 4 26B</td><td>Q4_K_M</td><td>~12-20</td><td>iGPU via Vulkan — snappy for daily use</td></tr>
+    <tr><td>Beelink GTR9 Pro</td><td>MiniMax M3</td><td>Q2_K</td><td>~3-6</td><td>96 GB VRAM + RAM, usable but slow</td></tr>
+    <tr><td>Beelink GTR9 Pro</td><td>GLM 5.2</td><td>API</td><td>~40-80</td><td>Cloud — full speed, no local load</td></tr>
+    <tr><td>2× RTX 4090</td><td>MiniMax M3</td><td>Q3_K_M</td><td>~6-9</td><td>Good quality, 32K context</td></tr>
+    <tr><td>2× RTX 5090</td><td>MiniMax M3</td><td>Q4_K_M</td><td>~10-14</td><td>Best quality/speed balance</td></tr>
+    <tr><td>8× H100</td><td>GLM 5.2</td><td>FP8</td><td>~180-250</td><td>Enterprise self-hosted</td></tr>
   </table>
   </div>
 
-  <div class="callout warn"><strong>⚠️ M3 VRAM Reality</strong>M3's 428B parameters require serious hardware. At Q4_K_M (~220 GB), you need a multi-GPU workstation or enterprise GPU. If you don't have that, consider running M3 via <a href="https://toolhalla.ai/blog/minimax-m3-local-vram-requirements" style="color:var(--accent)" target="_blank">hosted inference</a> while keeping smaller models fully local. See the Gemma 4 section below for viable alternatives.</div>
-
-  <div class="callout info"><strong>📊 vLLM vs Ollama — When to Use Which</strong><br>
-  <strong>Ollama (single user, interactive):</strong> ~8s cold start, ~5-35 tok/s, 1.6 GB less VRAM. Better for ad-hoc use and smaller models.<br>
-  <strong>vLLM (multi-user, production):</strong> ~22s cold start, ~78+ tok/s, 8-9× aggregate throughput under concurrency. PagedAttention + continuous batching.<br>
-  <strong>Rule of thumb:</strong> 1-2 users → Ollama. 3+ users or API serving → vLLM.</div>
-
-  <!-- ─── 2. CONCURRENT USERS ─── -->
-  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">2. Max Concurrent Users</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">How many team members can use Hermes simultaneously depends on your serving framework, context lengths, and whether M3 is the only model or one of several.</p>
-
-  <div class="cmd-table-wrapper">
-  <table class="cmd-table">
-    <tr><th>Setup</th><th>Framework</th><th>Concurrent Users</th><th>Experience</th></tr>
-    <tr><td>Single user, direct Ollama</td><td>Ollama</td><td>1</td><td>Snappy, ~8-12 tok/s generation</td></tr>
-    <tr><td>Small team (Ollama)</td><td>Ollama + parallel</td><td>2-3</td><td>Noticeable slowdown, 4-6 tok/s each</td></tr>
-    <tr><td>Small team (vLLM)</td><td>vLLM, 2× 4090</td><td>4-6</td><td>~6-10 tok/s each, good for coding</td></tr>
-    <tr><td>Team + vLLM (H100)</td><td>vLLM, 1× H100</td><td>~300</td><td>Sustained ~3,000 aggregate tok/s</td></tr>
-    <tr><td>Team + model routing</td><td>vLLM + Ollama</td><td>10-20</td><td>M3 for complex tasks, smaller models for chat/editing</td></tr>
-  </table>
-  </div>
-
-  <div class="callout success"><strong>💡 Smart Concurrency</strong>For an engineering firm with 3-5 developers: route simple queries (git status, file search, quick edits) to a Gemma 4 E4B or Llama 3.2 3B that handles 10+ concurrent requests easily. Only route complex reasoning, code review, and agentic tasks to M3. This gives you <strong>responsive low-latency for daily work</strong> + M3 power when you need it.</div>
-
-  <!-- ─── 3. API SEARCH & TOOL CAPABILITIES ─── -->
-  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">3. Web Search & API Considerations</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Hermes has built-in web search (<code>web_search</code>, <code>web_extract</code>, <code>browser</code> tools), but they don't come from the local model — they come from Hermes' tool system. Here's what you need to know:</p>
-
-  <div class="cmd-table-wrapper">
-  <table class="cmd-table">
-    <tr><th>Capability</th><th>Source</th><th>Local Model Needed?</th><th>Requires Internet?</th><th>Notes</th></tr>
-    <tr><td><code>web_search</code></td><td>Firecrawl <span style="color:var(--text2)">(default)</span> / Google / SearXNG</td><td>❌ No — tool runs independently</td><td>✅ Yes — needs API endpoint</td><td>Free tier: 500 queries/mo. Self-host via SearXNG for offline teams</td></tr>
-    <tr><td><code>web_extract</code></td><td>Firecrawl / direct HTTP</td><td>❌ No</td><td>✅ Yes</td><td>Extracts markdown from URLs. Also works on PDFs</td></tr>
-    <tr><td><code>browser</code> (full)</td><td>Browserbase / Playwright</td><td>❌ No</td><td>✅ Yes</td><td>Full browser automation, screenshots, vision</td></tr>
-    <tr><td><code>vision_analyze</code></td><td>Auxiliary vision model</td><td>✅ Needs vision-capable model</td><td>⚠️ Local is possible</td><td>M3 is natively multimodal — can handle images</td></tr>
-    <tr><td><code>text_to_speech</code></td><td>Edge TTS / OpenAI TTS</td><td>❌ No</td><td>✅ Yes (Edge needs net)</td><td>Edge TTS is free, locally cacheable</td></tr>
-    <tr><td><code>image_gen</code></td><td>Stable Diffusion / Flux / DALL-E</td><td>Diffusion models run locally</td><td>⚠️ Optional</td><td>Run Flux or SDXL locally with ComfyUI</td></tr>
-  </table>
-  </div>
-
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Search Configuration Options</h3>
+  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">2. Recommended Model Fleet by Hardware</h3>
 
   <div class="arch-grid">
     <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15)">🌐</div>
-      <h3>Nous Portal (Easiest)</h3>
-      <p><code>hermes setup --portal</code> → OAuth login → web search, TTS, browser, image gen work immediately. ~$10-20/mo. Best for single-user or small team.</p>
+      <div class="icon" style="background:var(--purple)">🖥</div>
+      <h3>Beelink GTR9 Pro (128 GB)</h3>
+      <p><span style="color:var(--accent)">Primary:</span> Gemma 4 26B A4B (~14 GB, 12-20 tok/s)<br>
+      <span style="color:var(--accent)">Heavy:</span> GLM 5.2 via API (1M context)<br>
+      <span style="color:var(--accent)">Offline:</span> MiniMax M3 Q2_K (~107 GB, 3-6 tok/s)<br>
+      <span style="color:var(--accent)">Fast:</span> Gemma 4 E4B (always hot)<br>
+      <span style="color:var(--text2);font-size:12px">Total local: ~16 GB active. API used for heavy tasks.</span></p>
     </div>
-    <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15)">🔍</div>
-      <h3>Self-Hosted Search</h3>
-      <p>Run SearXNG locally: <code>docker run -d -p 4000:8080 searxng/searxng</code>. Configure <code>web_search</code> to point to it. 100% offline, no API costs.</p>
-    </div>
-    <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15)">⚙️</div>
-      <h3>Custom API Key</h3>
-      <p>Configure Google Programmable Search, Brave Search, or Bing in config.yaml. Set <code>HERMES_WEB_SEARCH_API_KEY</code> in <code>.env</code>. Per-query pricing (~$0.001 each).</p>
-    </div>
-    <div class="arch-card">
-      <div class="icon" style="background:rgba(110,193,228,.15)">📎</div>
-      <h3>MCP Servers</h3>
-      <p>Hermes supports MCP (Model Context Protocol). Connect to any MCP server for extended capabilities: custom databases, internal wikis, Jira, Slack.</p>
-    </div>
-  </div>
-
-  <!-- ─── 4. MISSING CAPABILITIES ─── -->
-  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">4. Missing Capabilities & How to Fill Them</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Even with M3, some capabilities need supplementary models or external services. Here's the complete gap analysis:</p>
-
-  <div class="cmd-table-wrapper">
-  <table class="cmd-table">
-    <tr><th>Capability</th><th>M3 Native?</th><th>Gap</th><th>Solution</th><th>Minimal Setup</th></tr>
-    <tr><td>**Vision (images)**</td><td>✅ Native multimodal</td><td>None — M3 handles images natively</td><td>Just configure <code>auxiliary.vision.provider</code> to use M3</td><td><code>provider: "custom"</code> with same base_url</td></tr>
-    <tr><td>**Vision (video)**</td><td>⚠️ Frame-based</td><td>Needs frame extraction before analysis</td><td>Hermes extracts frames with FFmpeg, M3 analyzes them</td><td><code>sudo apt install ffmpeg</code></td></tr>
-    <tr><td>**Audio / Speech**</td><td>❌ Text only</td><td>No native ASR or TTS</td><td>Whisper (local) for STT. Edge TTS (free) for TTS</td><td><code>ollama pull whisper:large-v3</code></td></tr>
-    <tr><td>**Web Search**</td><td>❌ Tool-based</td><td>Not a search capability gap — it's a tool gap</td><td>SearXNG (local) or Nous Portal</td><td>Docker SearXNG on port 4000</td></tr>
-    <tr><td>**Code Execution**</td><td>❌ Hermes handles it</td><td>Hermes' terminal tool does this, not the model</td><td>Nothing needed — it's built in</td><td>Already works</td></tr>
-    <tr><td>**Image Generation**</td><td>❌ No</td><td>No image output capability</td><td>Flux.1-schnell (local, fast, Apache 2.0)</td><td><code>pip install diffusers</code></td></tr>
-    <tr><td>**Structured Outputs**</td><td>✅ Good</td><td>JSON mode works, grammar-constrained</td><td>No action needed</td><td>Use <code>"response_format": {"type": "json_object"}</code></td></tr>
-    <tr><td>**Function Calling**</td><td>✅ Excellent</td><td>Native tool-use, agentic coding</td><td>No action needed</td><td>Hermes handles tool definitions</td></tr>
-    <tr><td>**1M Context**</td><td>✅ MSA sparse attention</td><td>Local VRAM limits practical context</td><td>Use M3 API for truly long documents</td><td>64K local, API for 512K+</td></tr>
-  </table>
-  </div>
-
-  <div class="callout warn"><strong>🔌 Vision Setup for M3</strong>Even though M3 is natively multimodal, Hermes needs explicit config to use it for vision. In <code>~/.hermes/config.yaml</code>, add:
-  <pre style="background:rgba(0,0,0,.3);padding:8px;border-radius:6px;margin-top:8px;font-size:12px">auxiliary:
-  vision:
-    provider: "custom"
-    base_url: "http://localhost:11434/v1"
-    model: "m3-64k"
-    api_key: "no-key"</pre>
-  Then verify: <code>hermes config check</code> should show vision as configured.</div>
-
-  <!-- ─── 5. SPECIALIZED SMALLER MODELS ─── -->
-  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">5. Supplementing with Specialized Local Models</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">The most powerful setup uses <strong>multiple models in parallel</strong>. M3 handles complex reasoning and agentic tasks; smaller models handle speed-critical, domain-specific, or low-latency work. Here's the recommended model fleet:</p>
-
-  <div class="callout info"><strong>🏆 Gemma 4 — The Ideal Companion Family</strong>Google's Gemma 4 (Apache 2.0, June 2026) spans 5 sizes from 2B to 31B, all with native function calling and 128-256K context. Every size runs on consumer hardware. Their built-in thinking mode and multi-token prediction (MTP) make them ideal Hermes companions.</div>
-
-  <div class="cmd-table-wrapper">
-  <table class="cmd-table">
-    <tr><th>Model</th><th>Params</th><th>VRAM (Q4)</th><th>Speed (tok/s)</th><th>Best For</th><th>Expertise</th></tr>
-    <tr><td><strong>Gemma 4 E2B</strong></td><td>2.3B eff.</td><td>2.9 GB</td><td>~100-150</td><td>Quick edits, git ops, file search, typo fixing</td><td>Bilingual DA/EN, fast function calling</td></tr>
-    <tr><td><strong>Gemma 4 E4B</strong></td><td>4.5B eff.</td><td>4.5 GB</td><td>~70-100</td><td>Simple chat, summarization, text classification</td><td>Audio input (native), 128K context</td></tr>
-    <tr><td><strong>Gemma 4 12B</strong></td><td>11.95B</td><td>6.7 GB</td><td>~45-65</td><td>RAG, document analysis, embedded vision</td><td>Encoder-free multimodal (vision+audio)</td></tr>
-    <tr><td><strong>Gemma 4 26B A4B</strong></td><td>25.2B total</td><td>14.4 GB</td><td>~35-50</td><td>Code generation, reasoning, agent fallback</td><td>MoE (only 4B active), AIME 88.3%</td></tr>
-    <tr><td><strong>Gemma 4 31B</strong></td><td>30.7B</td><td>17.5 GB</td><td>~20-35</td><td>Heavy reasoning without M3 overhead</td><td>MMLU 85.2%, Codeforces 2150 ELO</td></tr>
-    <tr><td><strong>Qwen 3.5 32B</strong></td><td>32B</td><td>18 GB</td><td>~25-40</td><td>Strong coding alternative</td><td>Top-tier coding + tool use</td></tr>
-    <tr><td><strong>Llama 3.2 3B</strong></td><td>3B</td><td>2.2 GB</td><td>~120-160</td><td>Ultra-fast routing, smallest viable fallback</td><td>Minimal VRAM, always hot</td></tr>
-  </table>
-  </div>
-
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Pull & Configure the Companion Models</h3>
-  <div class="code-block">
-    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Pull Gemma 4 models via Ollama</span>
-ollama pull gemma4:E2B
-ollama pull gemma4:E4B
-ollama pull gemma4:12B
-ollama pull gemma4:26B-A4B
-ollama pull gemma4:31B
-
-<span class="cmt"># Pull other useful companions</span>
-ollama pull llama3.2:3b       <span class="cmt"># Ultra-fast fallback</span>
-ollama pull whisper:large-v3  <span class="cmt"># Speech-to-text (1.6 GB)</span></pre>
-  </div>
-
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Hermes Config: Multi-Model Routing</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">This configuration routes tasks to the right model automatically:</p>
-  <div class="code-block">
-    <div class="header"><span class="lang">YAML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># ~/.hermes/config.yaml — Multi-Model Setup</span>
-model:
-  <span class="cmt"># Primary: M3 for heavy agentic work</span>
-  default: "m3-64k"
-  provider: "custom"
-  base_url: "http://localhost:11434/v1"
-  api_key: "no-key"
-
-  <span class="cmt"># Fallback tiers — Hermes tries each in order on failure</span>
-  fallback:
-    - provider: "custom"
-      base_url: "http://localhost:11434/v1"
-      model: "gemma4:26B-A4B"
-      api_key: "no-key"
-    - provider: "custom"
-      base_url: "http://localhost:11434/v1"
-      model: "gemma4:E4B"
-      api_key: "no-key"
-    - provider: "custom"
-      base_url: "http://localhost:11434/v1"
-      model: "llama3.2:3b"
-      api_key: "no-key"
-
-<span class="cmt"># Vision — use M3's native multimodal</span>
-auxiliary:
-  vision:
-    model: "m3-64k"
-    provider: "custom"
-    base_url: "http://localhost:11434/v1"
-    api_key: "no-key"
-  compression:
-    model: "gemma4:E4B"
-    provider: "custom"
-    base_url: "http://localhost:11434/v1"
-    api_key: "no-key"
-
-<span class="cmt"># Web search via self-hosted SearXNG</span>
-web_search:
-  provider: "custom"
-  base_url: "http://localhost:4000"
-  api_key: "no-key"</pre>
-  </div>
-
-  <div class="callout success"><strong>✅ How Routing Works</strong>When Hermes hits an error or timeout with M3 (e.g., OOM on a long context), it auto-falls back through the chain: M3 → Gemma 4 26B → Gemma 4 E4B → Llama 3.2 3B. Each fallback is faster and uses less VRAM. You can also <strong>manually switch</strong>: <code>hermes config set model gemma4:26B-A4B</code> or ask Hermes: "Switch to the fast model for quick edits."</div>
-
-  <!-- ─── 6. RECOMMENDED FLEET BY HARDWARE ─── -->
-  <h3 style="font-size:15px;margin:28px 0 8px;color:var(--text2)">6. Recommended Model Fleet by Hardware</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">No matter what hardware you have, there's a viable multi-model setup. These configurations let you run Hermes locally with the best cost/quality tradeoff for your situation.</p>
-
-  <div class="arch-grid">
     <div class="arch-card">
       <div class="icon" style="background:rgba(52,211,153,.15)">💻</div>
       <h3>Budget (16-24 GB GPU)</h3>
-      <p><strong>1× RTX 3060/4060</strong><br>
-      <span style="color:var(--accent)">Lead:</span> Gemma 4 12B<br>
+      <p><span style="color:var(--accent)">Lead:</span> Gemma 4 12B<br>
       <span style="color:var(--accent)">Fast:</span> Gemma 4 E4B<br>
-      <span style="color:var(--accent)">Ultra:</span> Llama 3.2 3B<br>
-      <span style="color:var(--text2);font-size:12px">~6.7 GB + 4.5 GB = 11.2 GB total</span></p>
+      <span style="color:var(--accent)">Cloud:</span> GLM 5.2 API<br>
+      <span style="color:var(--text2);font-size:12px">~11 GB total local</span></p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(110,193,228,.15)">⚡</div>
-      <h3>Mid-Range (24-48 GB)</h3>
-      <p><strong>1× RTX 4090 / 2× 3090</strong><br>
-      <span style="color:var(--accent)">Lead:</span> Gemma 4 31B or M3 Q2<br>
-      <span style="color:var(--accent)">Fast:</span> Gemma 4 12B<br>
-      <span style="color:var(--accent)">Special:</span> Whisper + Florence-2<br>
-      <span style="color:var(--text2);font-size:12px">~17.5 GB + 6.7 GB = 24.2 GB</span></p>
+      <h3>Mid-Range (48 GB)</h3>
+      <p><span style="color:var(--accent)">Lead:</span> Gemma 4 31B<br>
+      <span style="color:var(--accent)">Cloud:</span> GLM 5.2 API<br>
+      <span style="color:var(--accent)">Fast:</span> Gemma 4 E4B<br>
+      <span style="color:var(--text2);font-size:12px">~18 GB local</span></p>
     </div>
     <div class="arch-card">
       <div class="icon" style="background:rgba(251,191,36,.15)">🏢</div>
-      <h3>Workstation (48-96 GB)</h3>
-      <p><strong>2× RTX 5090 / A6000</strong><br>
-      <span style="color:var(--accent)">Lead:</span> M3 Q4_K_M (~220 GB)<br>
+      <h3>Workstation (96+ GB)</h3>
+      <p><span style="color:var(--accent)">Lead:</span> M3 Q4_K_M or GLM 5.2 FP8<br>
       <span style="color:var(--accent)">Fast:</span> Gemma 4 26B A4B<br>
-      <span style="color:var(--accent)">Vision:</span> M3 native<br>
-      <span style="color:var(--text2);font-size:12px">Requires tensor parallelism across GPUs</span></p>
-    </div>
-    <div class="arch-card">
-      <div class="icon" style="background:rgba(248,113,113,.15)">☁️</div>
-      <h3>Hybrid (Local + API)</h3>
-      <p><strong>Any GPU + cloud M3</strong><br>
-      <span style="color:var(--accent)">Local:</span> Gemma 4 31B (fast, always-on)<br>
-      <span style="color:var(--accent)">Cloud:</span> M3 via API for heavy tasks<br>
-      <span style="color:var(--accent)">Best of both:</span> speed + frontier quality<br>
-      <span style="color:var(--text2);font-size:12px">~$0.50-2/hr for M3 cloud inference</span></p>
+      <span style="color:var(--accent)">Full local:</span> No cloud needed<br>
+      <span style="color:var(--text2);font-size:12px">Requires multi-GPU</span></p>
     </div>
   </div>
 
-  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Switching Models at Runtime</h3>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">During a Hermes session, you can switch between models on the fly:</p>
+  <div class="callout success"><strong>✅ Bottom Line</strong>You don't need enterprise hardware. A <strong>Beelink GTR9 Pro + GLM 5.2 API</strong> combo covers everything: fast local models for daily work, GLM 5.2's 1M context and frontier reasoning for complex tasks, and full offline capability with MiniMax M3. Total hardware cost: ~€2,000. Total API cost: ~$20-50/month.</div>
+</section>
+
+<!-- ===== ACCESS FROM NILT ===== -->
+<section id="nilt">
+  <h2><span class="num">🏢</span> Access from Another PC (NILT Edition) <span class="phase-tag">production</span></h2>
+  <p class="sub">How colleagues access Hermes from their workstations — at NILT, from home, or anywhere with internet. No port forwarding, no security holes.</p>
+
+  <div class="callout warn"><strong>🔒 Never Expose Directly</strong>Hermes and Ollama should <strong>never</strong> be exposed to the public internet directly. Use one of these secure methods instead.</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Method A: Tailscale (Recommended — Zero Config)</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Creates a private mesh network. Both PCs get a virtual IP. Works through firewalls, NAT, and CGNAT. No open ports needed.</p>
   <div class="code-block">
-    <div class="header"><span class="lang">Hermes Command</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-    <pre><span class="cmt"># Inside a Hermes session — switch models instantly</span>
-/model gemma4:31B        <span class="cmt">→ Switch to Gemma 4 31B for heavy reasoning</span>
-/model gemma4:E4B        <span class="cmt">→ Switch to fast E4B for quick edits</span>
-/model m3-64k            <span class="cmt">→ Back to M3 for agentic tasks</span>
-/model list              <span class="cmt">→ Show all available models</span>
+    <div class="header"><span class="lang">Bash (on Hermes PC)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre>curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
+<span class="cmt"># → Visit the URL to auth. Note the Tailscale IP (e.g., 100.x.x.x)</span>
+sudo tailscale ip -4</pre>
+  </div>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash (on your NILT laptop)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># From NILT — SSH via Tailscale</span>
+ssh user@100.x.x.x
 
-<span class="cmt"># Or tell Hermes directly:</span>
-"Switch to the 31B model, I need complex reasoning"
-"Use the fast E4B model for this batch of file edits"</pre>
+<span class="cmt"># Now run Hermes</span>
+hermes
+
+<span class="cmt"># Or run a single command</span>
+ssh user@100.x.x.x "hermes -z 'Read the README and summarize it'"</pre>
   </div>
 
-  <div class="callout info"><strong>🧠 Gemma 4's Thinking Mode</strong>Gemma 4 has a built-in thinking/reasoning mode (like DeepSeek-R1). Enable it by adding <code>&lt;|think|&gt;</code> to the start of your system prompt in <code>~/.hermes/SOUL.md</code>. The model will output an internal reasoning block before answering. This dramatically improves performance on math, logic, and coding — but uses ~2× more tokens per query. Good for: debugging, code review, PR analysis. Skip for: quick edits, chat, summarization.</div>
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Method B: Cloudflare Tunnel (No VPN Needed)</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Expose SSH via Cloudflare Tunnel — users connect through Cloudflare's edge network. No public IP needed, DDoS protection built in.</p>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash (on Hermes PC)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Install cloudflared</span>
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared
+chmod +x /usr/local/bin/cloudflared
 
-  <div class="callout success"><strong>✅ Bottom Line</strong>You don't need M3 to run Hermes effectively. A <strong>Gemma 4 31B + E4B</strong> combo costs ~$0 in hardware if you have a 24 GB RTX 4090, and covers 95% of what an engineering firm needs. Add M3 when you need its 1M context, agentic coding benchmarks (SWE-Bench 59%), or native multimodal reasoning. The secret to a great local AI setup isn't the biggest model — it's the <strong>right model for each task</strong>.</div>
+<span class="cmt"># Authenticate and create a tunnel</span>
+cloudflared tunnel login
+cloudflared tunnel create hermes-ssh
 
+<span class="cmt"># Configure the tunnel (edit ~/.cloudflared/config.yml)</span>
+<span class="cmt"># url: ssh://localhost:22</span>
+<span class="cmt"># Run it:</span>
+cloudflared tunnel run hermes-ssh</pre>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Method C: Telegram / Discord Gateway (Zero Client Setup)</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">No SSH needed at all. Hermes connects to Telegram/Discord via the gateway — you message it like a chatbot from your phone or any computer.</p>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash (on Hermes PC)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Enable Telegram in ~/.hermes/config.yaml</span>
+<span class="cmt"># platforms:</span>
+<span class="cmt">#   telegram:</span>
+<span class="cmt">#     enabled: true</span>
+<span class="cmt">#     token: "YOUR_BOT_TOKEN"</span>
+
+<span class="cmt"># Start the gateway</span>
+hermes gateway
+
+<span class="cmt"># Now message your bot on Telegram — Hermes responds instantly</span></pre>
+  </div>
+
+  <div class="callout success"><strong>🏢 NILT Workflow Example</strong><br>
+  1. Hermes PC runs at the office with GLM 5.2 + local models<br>
+  2. You SSH in from NILT via Tailscale: <code>ssh hermes@100.x.x.x</code><br>
+  3. Ask Hermes: "Run the CI pipeline on project-x and report back"<br>
+  4. Hermes responds with results — all commands run on the PC, you see the output<br>
+  5. Or just message the Telegram bot from the lab floor — no terminal needed</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Security Checklist for NILT Access</h3>
+  <ul class="checklist">
+    <li class="done">Use Tailscale or Cloudflare Tunnel — never expose SSH directly</li>
+    <li class="done">Disable password auth: <code>PasswordAuthentication no</code></li>
+    <li class="done">Use SSH keys only — one per team member</li>
+    <li class="done">Set up <code>~/.ssh/authorized_keys</code> with only approved keys</li>
+    <li>Consider MFA via Tailscale ACLs for production</li>
+    <li>Monitor access: <code>journalctl -u ssh -n 20</code> to check logins</li>
+    <li>Backup <code>~/.hermes</code> daily — it holds memory, skills, and config</li>
+  </ul>
+</section>
+
+<!-- ===== ROADMAP ===== -->
+<section id="roadmap">
+  <h2><span class="num">🗺</span> Roadmap: From Hardware to Full Agentic Ecosystem</h2>
+  <p class="sub">A complete, phased roadmap from buying the hardware to having a fully operational AI agent accessible to your entire team. Each step builds on the previous one.</p>
+
+  <div class="roadmap">
+    <div class="roadmap-item" data-step="1">
+      <h4>Hardware Acquisition</h4>
+      <p><strong>Choose your path:</strong><br>
+      🖥 <strong>Beelink GTR9 Pro</strong> (~€2,000) — Silent, compact, unified 128 GB memory. Best for 3-5 users.<br>
+      ⚡ <strong>GPU Workstation</strong> (~€3,000-8,000) — RTX 4090/5090 or dual 3090s. Higher throughput, more noise.<br>
+      ☁️ <strong>VPS/Hybrid</strong> (~€50-200/mo) — Hetzner or RunPod with GPU. No local hardware needed.<br>
+      <span style="color:var(--text2);font-size:12px">Install Ubuntu 24.04 LTS, configure 96 GB VRAM split (Beelink). Order 2 TB NVMe. Install basic tools.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="2">
+      <h4>Local AI Serving</h4>
+      <p>Install <strong>Ollama</strong> and pull your model fleet. Configure 24h keep-alive. Create 64K+ context variants. Verify API endpoints work.<br>
+      <span style="color:var(--text2);font-size:12px">Recommended: Gemma 4 26B A4B (primary) + GLM 5.2 API (heavy) + Gemma 4 E4B (fast fallback). Time: ~30 min.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="3">
+      <h4>Hermes Agent Core</h4>
+      <p>Install Hermes. Configure multi-model YAML with fallback chain. Test with <code>hermes chat</code>. Enable memory, skill map, and auto-improvement.<br>
+      <span style="color:var(--text2);font-size:12px">Clone <code>hermes-setup</code> repo for pre-configured skills (1082 skills, 46 categories). Time: ~20 min.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="4">
+      <h4>Network & Remote Access</h4>
+      <p>Install Tailscale. Enable SSH with key-only auth. Set up ufw. Test remote login from laptop. Verify Hermes works over SSH.<br>
+      <span style="color:var(--text2);font-size:12px">Time: ~15 min. From NILT: <code>ssh user@100.x.x.x "hermes -z 'System health?'"</code></span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="5">
+      <h4>GitHub & File Sharing</h4>
+      <p>Install GitHub CLI, auth with deploy keys. Clone org repos. Set up Samba share at /srv/shared. Configure Syncthing for live file sync.<br>
+      <span style="color:var(--text2);font-size:12px">Team members mount the share as a network drive. Hermes can edit files and git push directly. Time: ~30 min.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="6">
+      <h4>Office Suite & Document Gen</h4>
+      <p>Install OnlyOffice or LibreOffice. Hermes generates .docx, .xlsx, .pptx on demand. Shared directories accessible from all machines.<br>
+      <span style="color:var(--text2);font-size:12px">Ask Hermes: "Create a project proposal with budget table." Time: ~20 min for setup.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="7">
+      <h4>Backups & Disaster Recovery</h4>
+      <p>Set up Restic encrypted backups. Daily cron at 2 AM. Local + off-site (S3/Backblaze). Verify restore procedure. Document the process in AGENTS.md.<br>
+      <span style="color:var(--text2);font-size:12px">Exclude model weights (~200 GB backup). Include: code, .hermes, srv/shared, .ssh. Time: ~20 min.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="8">
+      <h4>Platform Integrations (Optional)</h4>
+      <p>Connect Telegram and Discord gateways. Configure gateway notification intervals. Set up cron jobs for daily standup reports, health checks, and automated PR reviews.<br>
+      <span style="color:var(--text2);font-size:12px">Hermes now works from your phone, laptop, and colleagues' machines. Time: ~30 min.</span></p>
+    </div>
+
+    <div class="roadmap-item" data-step="9">
+      <h4>Scale & Optimize</h4>
+      <p>Tune Ollama parameters for your hardware. Add compression models. Set up SearXNG for local web search. Add MCP servers for internal tools. Onboard team members with their own SSH keys.<br>
+      <span style="color:var(--text2);font-size:12px">For 4+ concurrent users: switch from Ollama to vLLM for higher throughput. Time: ongoing optimization.</span></p>
+    </div>
+  </div>
+
+  <div class="callout success"><strong>🗺 Total Timeline</strong>From unboxing the Beelink to a fully operational multi-user Hermes system: <strong>~3 hours</strong> for one person following this guide. Total cost: ~€2,000 (Beelink) + ~$40/month (GLM 5.2 API + domain).</div>
 </section>
 
 <!-- ===== TROUBLESHOOTING ===== -->
@@ -923,30 +920,28 @@ web_search:
 
   <div class="trouble-item">
     <details>
-      <summary>🔥 Ollama won't start / GPU not detected</summary>
+      <summary>🔥 Ollama won't start / GPU not detected (Beelink / AMD)</summary>
       <div class="content">
         <strong>Check:</strong><br>
-        <code>nvidia-smi</code> — should show your GPU and driver version.<br>
-        <code>sudo systemctl status ollama</code> — check for CUDA errors.<br><br>
+        <code>sudo journalctl -u ollama -n 50 --no-pager</code> — look for GPU errors<br>
+        <code>sudo apt install rocm-hip-libraries clinfo</code> — install ROCm/Vulkan support<br><br>
         <strong>Fix:</strong><br>
-        - Install NVIDIA container toolkit: <code>sudo apt install nvidia-container-toolkit</code><br>
-        - Ensure <code>OLLAMA_GPU_OVERHEAD=1</code> is set<br>
-        - Check <code>journalctl -u ollama -n 50 --no-pager</code> for detailled errors
+        - Set VRAM split to 96 GB in BIOS first<br>
+        - <code>sudo apt install mesa-vulkan-drivers</code><br>
+        - Set <code>OLLAMA_GPU_OVERHEAD=1</code> in ~/.hermes/.env<br>
+        - Try: <code>OLLAMA_VULKAN_VISIBLE_DEVICES=1 ollama serve</code>
       </div>
     </details>
   </div>
 
   <div class="trouble-item">
     <details>
-      <summary>🐢 Model is extremely slow (under 2 t/s)</summary>
+      <summary>🐢 Model is extremely slow (under 2 tok/s)</summary>
       <div class="content">
-        <strong>Likely cause:</strong> CPU-only inference or GPU offloading isn't working.<br><br>
-        <strong>Check:</strong> <code>ollama ps</code> — see the "layers" column. You want most layers on GPU.<br>
-        <strong>Fix:</strong><br>
-        - Set <code>num_gpu 99</code> in your Modelfile and recreate the model<br>
-        - If you have multiple GPUs, enable tensor parallelism: <code>OLLAMA_NUM_GPU=2</code><br>
-        - Try a smaller quantization: <code>ollama pull minimax-m3:q3_K_M</code><br>
-        - Widen API timeout: add <code>HERMES_API_TIMEOUT=1800</code> to <code>~/.hermes/.env</code>
+        <strong>Likely cause:</strong> CPU-only inference (GPU offloading failed).<br><br>
+        <strong>Beelink fix:</strong> Ensure VRAM split is 96 GB in BIOS. Verify Vulkan: <code>vulkaninfo --summary</code><br>
+        <strong>NVIDIA fix:</strong> <code>ollama ps</code> — check layers on GPU. Set <code>num_gpu 99</code> in Modelfile.<br>
+        <strong>Both:</strong> Try a smaller quantization or model. Use GLM 5.2 API for heavy tasks instead.
       </div>
     </details>
   </div>
@@ -957,121 +952,62 @@ web_search:
       <div class="content">
         <strong>Check:</strong><br>
         - <code>curl http://localhost:11434/api/tags</code> — is Ollama reachable?<br>
-        - <code>curl http://localhost:11434/v1/chat/completions ...</code> — is the API compatible?<br>
-        - Review <code>~/.hermes/config.yaml</code> — correct <code>base_url</code> and <code>model</code> name?<br><br>
-        <strong>Fix:</strong><br>
-        - The model name in config must match <code>ollama list</code> output exactly<br>
-        - If using the custom provider, set <code>provider: "custom"</code> and <code>base_url: "http://localhost:11434/v1"</code><br>
-        - Try <code>hermes setup</code> again and choose "Custom Endpoint"
+        - <code>curl http://localhost:11434/v1/chat/completions ...</code> — API compatible?<br>
+        - Model name in config must match <code>ollama list</code> exactly<br>
+        - For GLM 5.2: <code>hermes -p glm config show</code> — correct base_url and provider?
       </div>
     </details>
   </div>
 
   <div class="trouble-item">
     <details>
-      <summary>💾 Out of memory / OOM kills</summary>
+      <summary>💾 Out of memory / OOM on Beelink</summary>
       <div class="content">
-        <strong>Symptoms:</strong> Ollama process killed, "killed" in journalctl, system freeze.<br><br>
+        <strong>Symptoms:</strong> Ollama killed, system freeze, swap thrashing.<br><br>
         <strong>Fix:</strong><br>
-        - Try a smaller quantization: <code>ollama pull minimax-m3:q3_K_M</code> or <code>q2_K</code><br>
-        - Reduce context size: change <code>num_ctx 64000</code> to <code>num_ctx 32000</code><br>
-        - Add swap space: <code>sudo fallocate -l 64G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile</code><br>
-        - Monitor with <code>htop</code> and <code>nvidia-smi -l 2</code>
+        - Reduce context size: change <code>num_ctx 32000</code> instead of 64000<br>
+        - Use a smaller model: Gemma 4 31B instead of M3<br>
+        - Add swap: <code>sudo fallocate -l 32G /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile</code><br>
+        - Set VRAM to 96 GB in BIOS — don't try to max RAM too<br>
+        - Route heavy tasks to GLM 5.2 API instead of running locally
       </div>
     </details>
   </div>
 
   <div class="trouble-item">
     <details>
-      <summary>🌐 Can't SSH from outside the LAN</summary>
+      <summary>🌐 Can't SSH from NILT (outside LAN)</summary>
       <div class="content">
         <strong>Don't:</strong> Port-forward SSH directly to the internet.<br><br>
         <strong>Do:</strong><br>
-        - <strong>Tailscale (recommended):</strong> <code>curl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up</code><br>
-        - <strong>WireGuard:</strong> <code>sudo apt install wireguard && wg-quick up ./wg0.conf</code><br>
-        - <strong>Cloudflare Tunnel:</strong> <code>sudo cloudflared tunnel create</code> + route to SSH via dashboard<br><br>
-        Then SSH to <code>user@tailscale-ip</code> or via the tunnel.
+        - <strong>Tailscale (easiest):</strong> Install on both machines. SSH to Tailscale IP.<br>
+        - <strong>Cloudflare Tunnel:</strong> Expose SSH via cloudflared.<br>
+        - <strong>WireGuard:</strong> Traditional VPN — more control, more setup.<br>
+        Both PC and laptop need Tailscale installed. Free tier supports 3 users.
       </div>
     </details>
   </div>
 
   <div class="trouble-item">
     <details>
-      <summary>🐙 GitHub CLI auth fails</summary>
+      <summary>🧬 GLM 5.2 API key / auth errors</summary>
       <div class="content">
-        <strong>Fix:</strong><br>
-        - Run <code>gh auth login</code> with the <code>--web</code> flag for device flow<br>
-        - Ensure SSH agent is running: <code>eval "$(ssh-agent -s)" && ssh-add ~/.ssh/hermes-deploy</code><br>
-        - Test: <code>ssh -T git@github.com</code> — should say "Hi your-org/repo"<br>
-        - If using HTTPS instead: <code>gh auth setup-git</code>
+        <strong>Common failures:</strong><br>
+        - Key not exported: <code>export Z_AI_API_KEY=your_key</code><br>
+        - Wrong provider name: must be <code>zai</code> (not "z-ai" or "glm")<br>
+        - Wrong base_url: must be <code>https://api.z.ai/api/coding/paas/v4</code><br>
+        - Add to ~/.bashrc: <code>export Z_AI_API_KEY=your_key</code><br>
+        - Test: <code>hermes -p glm -z "Say ready"</code>
       </div>
     </details>
-  </div>
-
-  <div class="trouble-item">
-    <details>
-      <summary>🔄 Restore from a backup</summary>
-      <div class="content">
-        <code>
-          <span class="cmt"># List snapshots</span><br>
-          restic -r /mnt/backup/restic-repo snapshots<br><br>
-          <span class="cmt"># Restore latest to a directory</span><br>
-          restic -r /mnt/backup/restic-repo restore latest --target ~/restore/<br><br>
-          <span class="cmt"># Or mount and browse like a filesystem</span><br>
-          restic -r /mnt/backup/restic-repo mount /mnt/restore-mount
-        </code>
-      </div>
-    </details>
-  </div>
-
-  <div class="trouble-item">
-    <details>
-      <summary>📡 Hermes Telegram/Discord gateway won't connect</summary>
-      <div class="content">
-        <strong>Fix:</strong><br>
-        - Enable the platform in <code>~/.hermes/config.yaml</code>:<br>
-        <pre style="background:transparent;padding:0;font-size:12px">platforms:
-  telegram:
-    enabled: true
-    token: "YOUR_BOT_TOKEN"
-  discord:
-    enabled: true
-    token: "YOUR_BOT_TOKEN"</pre>
-        - Run <code>hermes gateway</code><br>
-        - Check <code>hermes gateway --status</code> for connection errors<br>
-        - Ensure the PC has outbound HTTPS access to Telegram/Discord APIs
-      </div>
-    </details>
-  </div>
-</section>
-
-<!-- ===== ANIMATED TERMINAL ===== -->
-<section id="demo" style="max-width:900px">
-  <h2><span class="num">▶</span> Live Demo</h2>
-  <p class="sub">A simulated Hermes session using the local M3 model — showing what you can expect.</p>
-
-  <div class="term-demo">
-    <div class="term-bar">
-      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-      <span class="title">hermes — local model (m3-64k)</span>
-    </div>
-    <div class="term-body" id="termBody">
-      <span class="prompt">user@pc:~$</span> hermes<br>
-      <span class="output" style="color:var(--accent);font-weight:600">◆ Hermes Agent — Local Mode (m3-64k)</span><br>
-      <span class="output">Type /help for commands, /model to switch models.</span><br><br>
-      <span class="prompt">You:</span> <span class="typing-line d1" style="color:var(--text)">List all Python files in ~/code and count lines of code</span><br>
-      <span class="output typing-line d2" style="color:var(--green)">◆ Scanning 12 repositories...</span><br>
-      <span class="output typing-line d3">  project-alpha/     → 2,340 lines  (12 files)<br>  firmware-core/     → 8,912 lines  (34 files)<br>  web-dashboard/     → 3,456 lines  (18 files)<br>  ─────────────────────────────<br>  Total: 14,708 lines  (64 files)</span><br>
-      <span class="prompt" style="animation:typing 1s steps(10) 7s forwards;overflow:hidden;white-space:nowrap;display:inline-block;width:0">You:</span><span style="opacity:0;animation:blink 1s step-end 7s infinite;display:inline-block">▌</span>
-    </div>
   </div>
 </section>
 
 <!-- ===== FOOTER ===== -->
 <footer>
   <p>Built with Hermes Agent · <a href="https://hermes-agent.nousresearch.com" target="_blank">Documentation</a> · <a href="https://github.com/nousresearch/hermes-agent" target="_blank">GitHub</a></p>
-  <p style="margin-top:8px">MiniMax M3 · Gemma 4 · Ollama · vLLM · SearXNG · Restic</p>
-  <p style="margin-top:16px;opacity:.5">NIL Technology Edition — designed by Hermes Agent running in Fable Mode.</p>
+  <p style="margin-top:8px">GLM 5.2 · MiniMax M3 · Gemma 4 · Ollama · vLLM · SearXNG · Restic</p>
+  <p style="margin-top:16px;opacity:.5">Beelink GTR9 Pro Edition — designed by Hermes Agent running in Fable Mode.</p>
 </footer>
 
 <script>
