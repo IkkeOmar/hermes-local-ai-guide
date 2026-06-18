@@ -23,7 +23,7 @@
     --font-body: 'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;scroll-padding-top:80px}
+  html{scroll-behavior:smooth;scroll-padding-top:68px}
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.7;overflow-x:hidden}
   ::selection{background:var(--accent);color:#000}
   ::-webkit-scrollbar{width:6px}
@@ -125,6 +125,7 @@
 
   /* ─── COMMAND TABLE ─── */
   .cmd-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+  .cmd-table-wrapper{overflow-x:auto;margin:16px 0}
   .cmd-table th,.cmd-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
   .cmd-table th{font-family:var(--font);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2)}
   .cmd-table td code{font-family:var(--font);font-size:12px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:4px}
@@ -177,6 +178,8 @@
     section{padding:40px 16px}
     .hero{padding:100px 16px 60px}
     .code-block pre{font-size:12px}
+    .cmd-table{font-size:12px}
+    .cmd-table th,.cmd-table td{padding:8px 10px}
   }
 </style>
 </head>
@@ -1006,8 +1009,7 @@ hermes gateway
 <!-- ===== FOOTER ===== -->
 <footer>
   <p>Built with Hermes Agent · <a href="https://hermes-agent.nousresearch.com" target="_blank">Documentation</a> · <a href="https://github.com/nousresearch/hermes-agent" target="_blank">GitHub</a></p>
-  <p style="margin-top:8px">GLM 5.2 · MiniMax M3 · Gemma 4 · Ollama · vLLM · SearXNG · Restic</p>
-  <p style="margin-top:16px;opacity:.5">Beelink GTR9 Pro Edition — designed by Hermes Agent running in Fable Mode.</p>
+  <p style="margin-top:8px">100% local capable · GLM 5.2 · MiniMax M3 · Gemma 4 · Ollama · vLLM · SearXNG · Restic</p>
 </footer>
 
 <script>
