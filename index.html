@@ -198,6 +198,7 @@
     <a href="#phase2">Phase 2</a>
     <a href="#phase3">SSH</a>
     <a href="#beelink">Beelink</a>
+    <a href="#workstation-pro">WS Pro</a>
     <a href="#models">Model Strategy</a>
     <a href="#roadmap">Roadmap</a>
     <a href="#nilt">NILT Access</a>
@@ -216,6 +217,8 @@
     <span>GLM 5.2</span>
     <span>MiniMax M3</span>
     <span>Beelink GTR9</span>
+    <span>RTX 5090</span>
+    <span>192 GB</span>
     <span>1M Context</span>
     <span>Multi-Model</span>
     <span>NILT Ready</span>
@@ -292,6 +295,26 @@
   </div>
 
   <div class="callout success"><strong>💡 Why Beelink GTR9 Pro for AI?</strong>The 128 GB unified memory means the iGPU can use up to 96 GB as VRAM for large models. This is the <strong>only sub-€2000 hardware</strong> that can run MiniMax M3 (Q2_K, ~107 GB), GLM 5.1-FP8, and multiple Gemma 4 models simultaneously — without a dedicated GPU. Silent, compact, and powerful enough for a small engineering team.</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Path C: Workstation Pro (Dedicated GPU — Maximum Throughput)</h3>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Component</th><th>Spec</th><th>~DKK</th><th>Danish Link</th></tr>
+    <tr><td>CPU</td><td>AMD Ryzen 9 9950X — 16C/32T Zen 5</td><td>4.500</td><td><a href="https://www.proshop.dk/CPU/AMD-Ryzen-9-9950X-43-GHz-80MB-box-AM5/3332361">Proshop</a></td></tr>
+    <tr><td>RAM</td><td>192 GB DDR5-6000 (4×48 GB Kingston/Corsair)</td><td>4.200</td><td><a href="https://www.proshop.dk/RAM/Kingston-FURY-64GB-DDR5-6000MHz-2x32GB-Renewed/3365514">Proshop</a></td></tr>
+    <tr><td>GPU</td><td>NVIDIA RTX 5090 32 GB GDDR7</td><td>28.000</td><td><a href="https://www.proshop.dk/Grafikkort?gt=5090">Proshop</a></td></tr>
+    <tr><td>MB</td><td>X870E / X670E — PCIe 5.0, future-proof</td><td>2.800</td><td><a href="https://www.proshop.dk/Bundkort/ASUS-Prime-X670E-Pro-WiFi/3355994">Proshop</a></td></tr>
+    <tr><td>Storage</td><td>4 TB NVMe SSD (Gen4, ~7 GB/s)</td><td>3.200</td><td><a href="https://www.proshop.dk/SSD/WD-Black-SN850X-4TB-M2-NVMe/3242240">Proshop</a></td></tr>
+    <tr><td>PSU</td><td>1200W Platinum/Gold — ATX 3.1, 12V-2×6</td><td>2.000</td><td><a href="https://www.proshop.dk/Stroemforsyning/be-quiet-Dark-Power-13-1000W-ATX-31-80-Titanium/3333366">Proshop</a></td></tr>
+    <tr><td>Case</td><td>Mid-tower ATX, mesh front, good airflow</td><td>1.000</td><td><a href="https://www.proshop.dk/Kabinet/Fractal-Design-Pop-Air-RGB-White-TG-ATX/3271022">Proshop</a></td></tr>
+    <tr><td>Cooler</td><td>360mm AIO liquid cooler</td><td>1.500</td><td><a href="https://www.proshop.dk/CPU-Koeleloesning/Arctic-Freezer-III-360-A-RGB/3296536">Proshop</a></td></tr>
+    <tr><td><strong>Total</strong></td><td></td><td><strong>~47.000</strong></td><td><strong>≈ €6.300 / ~$6.800</strong></td></tr>
+  </table>
+  </div>
+
+  <div class="callout info"><strong>🔧 Budget Alternative (~€3.000 / ~22.000 DKK)</strong>Replace RTX 5090 with <strong>RTX 5080 16 GB</strong> (~12.000 DKK) + 128 GB RAM instead of 192 GB. Still excellent throughput: Gemma 4 31B at Q8 (~35 GB) runs entirely in VRAM, MiniMax M3 Q2_K with CPU offloading at ~4-8 tok/s. Upgrade GPU later when prices drop.</div>
+
+  <div class="callout success"><strong>⚡ Why Workstation Pro?</strong>32 GB dedicated VRAM + 192 GB system RAM. MiniMax M3 at <strong>Q3_K (~120 GB)</strong> fits with 80 GB RAM + 12 GB VRAM headroom. Gemma 4 31B loads entirely on the GPU. 10-14 tok/s on M3, 40-80 tok/s on Gemma. 4-5 concurrent Hermes agents. Future upgrade path: add a second RTX 5090 for 64 GB VRAM total.</div>
 
   <ul class="checklist">
     <li>Ubuntu 24.04 LTS installed and updated: <code>sudo apt update && sudo apt upgrade -y</code></li>
@@ -572,6 +595,139 @@ ssh user@hermes-pc "ollama ps && hermes --version"</pre>
   </div>
 
   <div class="callout success"><strong>🎯 Recommended Beelink Setup</strong>Run <strong>Gemma 4 26B A4B</strong> as your primary always-on model (~14 GB, 12-20 tok/s, excellent for 95% of tasks). Route complex coding and long-context tasks to <strong>GLM 5.2 via API</strong>. Pull MiniMax M3 Q2_K for offline use when you need 100% air-gapped operation. This gives you speed + capability + privacy, all on a silent €2k mini PC.</div>
+</section>
+
+<!-- ===== WORKSTATION PRO DEEP DIVE ===== -->
+<section id="workstation-pro">
+  <h2><span class="num">🖥</span> Workstation Pro — Deep Dive <span class="phase-tag">reference</span></h2>
+  <p class="sub">The custom-built workstation with RTX 5090 + 192 GB RAM is the <strong>ultimate hardware</strong> for running Hermes with multiple local models. Higher throughput, better quantization quality, and a future upgrade path the Beelink cannot match.</p>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Beelink GTR9 Pro vs Workstation Pro — Which One?</h3>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Metric</th><th>Beelink GTR9 Pro</th><th>Workstation Pro</th></tr>
+    <tr><td>Price</td><td>~15.000 DKK (€2.000)</td><td>~47.000 DKK (€6.300)</td></tr>
+    <tr><td>Form Factor</td><td>🟢 Mini PC, silent, 1.5L</td><td>🔵 Full ATX tower, fans audible</td></tr>
+    <tr><td>M3 Quant Quality</td><td>Q2_K (~107 GB) — lowest quality</td><td><strong>Q3_K (~120 GB)</strong> or <strong>Q4_K_M (~160 GB)</strong></td></tr>
+    <tr><td>M3 Speed</td><td>~3-6 tok/s</td><td><strong>~10-14 tok/s</strong> (Q4_K_M)</td></tr>
+    <tr><td>Gemma 4 31B</td><td>~8-14 tok/s (iGPU)</td><td><strong>~40-80 tok/s</strong> (dedicated GPU)</td></tr>
+    <tr><td>Memory Type</td><td>128 GB unified (shared CPU/GPU)</td><td>32 GB VRAM + 192 GB RAM (separate)</td></tr>
+    <tr><td>Upgrade Path</td><td>🔴 None — soldered RAM, no dGPU</td><td>🟢 Add second GPU, upgrade RAM to 256 GB</td></tr>
+    <tr><td>Power</td><td>~65W idle, ~120W load</td><td>~150W idle, ~600W+ load</td></tr>
+    <tr><td>Noise</td><td>Silent (fanless at idle)</td><td>Audible under load (GPU fans)</td></tr>
+    <tr><td>Storage</td><td>2x M.2, max 8 TB</td><td>4-6 M.2 + SATA, 20+ TB possible</td></tr>
+    <tr><td>Concurrent Agents</td><td>3-4 (Gemma 4 fleet)</td><td><strong>5+</strong> (M3 for heavy + Gemma for fast)</td></tr>
+  </table>
+  </div>
+
+  <div class="callout success"><strong>🎯 Which One Should You Pick?</strong><br>
+  <strong>Pick Beelink GTR9 Pro if:</strong> You want silent, compact, plug-and-play. You don't mind 3-6 tok/s on M3 and prefer a €2k price tag. Good for 1-3 users.<br><br>
+  <strong>Pick Workstation Pro if:</strong> You want maximum quality and throughput. You'll run M3 at Q3_K or Q4_K for much better reasoning quality. You have 4-5 concurrent developers. You want future expandability (second GPU, more storage). Your budget is €3k-€6k.</div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Assembly & Compatibility Notes</h3>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(248,113,113,.15)">⚡</div>
+      <h3>PSU: Minimum 1200W</h3>
+      <p>RTX 5090 peaks at ~575W transient. Ryzen 9950X at ~230W full load. <strong>Get ATX 3.1</strong> with native 12V-2×6 connector — no adapter needed. Be Quiet Dark Power 13 or Corsair HX1200i.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(108,138,255,.15)">🧠</div>
+      <h3>192 GB RAM: BIOS Update Required</h3>
+      <p>4×48 GB kits need AGESA 1.2+ on AM5. Update BIOS <strong>before</strong> installing RAM. Enable EXPO, set UCLK=MCLK=3000 MHz for stability. Use <code>memtest86+</code> to verify.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(251,191,36,.15)">🌡️</div>
+      <h3>CPU Cooler: 360mm AIO Minimum</h3>
+      <p>Ryzen 9950X runs hot under sustained AVX-512 load (LLM inference). A 360mm AIO (Arctic Freezer III 360 or similar) keeps it at 80°C under load. Air cooling not recommended.</p>
+    </div>
+    <div class="arch-card">
+      <div class="icon" style="background:rgba(167,139,250,.15)">📐</div>
+      <h3>GPU Sag: Use Support Bracket</h3>
+      <p>RTX 5090 is massive and heavy. Most cards include a support bracket. If not, buy a $10 GPU stand. Without one, PCIe slot can crack over time — especially during transport.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Danish Retailer Links</h3>
+  <p style="font-size:14px;color:var(--text2);margin-bottom:12px">Buy from Danish retailers for consumer protection, Danish keyboard layouts (if pre-built), and quick warranty/RMA:</p>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Retailer</th><th>Best For</th><th>Link</th></tr>
+    <tr><td><strong>Proshop</strong></td><td>Best selection, fast delivery, good prices on GPUs and RAM</td><td><a href="https://www.proshop.dk/">proshop.dk</a></td></tr>
+    <tr><td><strong>Komplett</strong></td><td>Complete builds, financing options, RAM/PSU bundles</td><td><a href="https://www.komplett.dk/">komplett.dk</a></td></tr>
+    <tr><td><strong>ComputerSalg</strong></td><td>Often cheapest on cases and cooling</td><td><a href="https://www.computersalg.dk/">computersalg.dk</a></td></tr>
+    <tr><td><strong>PriceRunner</strong></td><td>Compare prices across all Danish stores</td><td><a href="https://www.pricerunner.dk/">pricerunner.dk</a></td></tr>
+    <tr><td><strong>MM-Vision</strong></td><td>Custom water cooling, high-end components</td><td><a href="https://www.mm-vision.dk/">mm-vision.dk</a></td></tr>
+    <tr><td><strong>DBA / Brugt</strong></td><td>Used RTX 4090/5090 for 20-30% off retail</td><td><a href="https://www.dba.dk/">dba.dk</a></td></tr>
+  </table>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Software Setup Specific to This Build</h3>
+  <div class="code-block">
+    <div class="header"><span class="lang">Bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+    <pre><span class="cmt"># Install latest NVIDIA drivers (570 series for RTX 5090)</span>
+sudo apt purge nvidia-* -y
+sudo add-apt-repository ppa:graphics-drivers/ppa -y
+sudo apt update && sudo apt install nvidia-driver-570 nvidia-utils-570 -y
+sudo reboot
+
+<span class="cmt"># After reboot: verify GPU + CUDA</span>
+nvidia-smi
+nvcc --version
+
+<span class="cmt"># Install CUDA 12.8 for maximum performance</span>
+wget https://developer.download.nvidia.com/compute/cuda/12.8.0/local_installers/cuda_12.8.0_570.86.10_linux.run
+sudo sh cuda_12.8.0_570.86.10_linux.run --toolkit --silent --override
+
+<span class="cmt"># Install Ollama (CUDA-aware)</span>
+curl -fsSL https://ollama.com/install.sh | sh
+
+<span class="cmt"># OR install vLLM for production multi-user serving (higher throughput)</span>
+pip install vllm
+python -m vllm.entrypoints.openai.api_server \
+  --model minimax-m3:q3_K_M \
+  --tensor-parallel-size 1 \
+  --gpu-memory-utilization 0.95 \
+  --max-model-len 32000 \
+  --port 8000
+
+<span class="cmt"># Create 64K context Ollama modelfile</span>
+cat > ~/Modelfile-m3-ws << 'EOF'
+FROM minimax-m3:q3_K_M
+PARAMETER num_ctx 64000
+PARAMETER num_gpu 99
+PARAMETER num_batch 512
+PARAMETER tensor_split 32
+EOF
+ollama create m3-ws -f ~/Modelfile-m3-ws
+
+<span class="cmt"># Keep Ollama hot</span>
+sudo mkdir -p /etc/systemd/system/ollama.service.d
+sudo tee /etc/systemd/system/ollama.service.d/override.conf << 'EOF'
+[Service]
+Environment="OLLAMA_KEEP_ALIVE=24h"
+Environment="OLLAMA_NUM_PARALLEL=4"
+Environment="OLLAMA_MAX_LOADED_MODELS=3"
+EOF
+sudo systemctl daemon-reload && sudo systemctl restart ollama</pre>
+  </div>
+
+  <h3 style="font-size:15px;margin:20px 0 8px;color:var(--text2)">Expected Performance — Workstation Pro</h3>
+  <div class="cmd-table-wrapper">
+  <table class="cmd-table">
+    <tr><th>Model</th><th>Quant</th><th>RAM/VRAM</th><th>tok/s</th><th>Notes</th></tr>
+    <tr><td>MiniMax M3 428B</td><td><strong>Q3_K_M</strong> (~120 GB)</td><td>~12 GB VRAM + ~108 GB RAM</td><td>~6-10</td><td>Much better quality than Beelink Q2_K. 32K context.</td></tr>
+    <tr><td>MiniMax M3 428B</td><td><strong>Q4_K_M</strong> (~160 GB)</td><td>~20 GB VRAM + ~140 GB RAM</td><td>~4-8</td><td>Best quality on this hardware. 16K context.</td></tr>
+    <tr><td>Gemma 4 31B</td><td>Q8_0</td><td>~35 GB VRAM</td><td>~40-80</td><td>Fully on GPU. Blazing fast. 128K context.</td></tr>
+    <tr><td>Gemma 4 26B A4B</td><td>Q8_0</td><td>~28 GB VRAM</td><td>~50-90</td><td>Best daily driver. Sub-100ms response.</td></tr>
+    <tr><td>DeepSeek 70B</td><td>Q4_K_M</td><td>~42 GB VRAM</td><td>~25-40</td><td>Fits with 32 GB VRAM + context.</td></tr>
+    <tr><td>Qwen 3.5 32B</td><td>Q8_0</td><td>~35 GB VRAM</td><td>~40-70</td><td>Strong coding, all on GPU.</td></tr>
+    <tr><td>DeepSeek V4 671B</td><td>IQ2_XXS</td><td>~170 GB RAM + GPU</td><td>~1-3</td><td>Tight fit but technically possible. Use API instead.</td></tr>
+    <tr><td>Llama 3.2 3B</td><td>Q8_0</td><td>~3 GB VRAM</td><td>~200+</td><td>Always-hot fallback. Near-instant.</td></tr>
+  </table>
+  </div>
+
+  <div class="callout success"><strong>⚡ Bottom Line</strong>The Workstation Pro is <strong>2-3× faster</strong> than the Beelink GTR9 Pro on every model, with <strong>better quantization quality</strong> (Q3_K or Q4_K_M instead of Q2_K on M3), and supports <strong>5+ concurrent users</strong>. Total build cost: ~47.000 DKK (€6.300). Budget version with RTX 5080: ~22.000 DKK (€3.000). The extra cost over Beelink (~32.000 DKK / €4.300) buys you roughly <strong>2.5× throughput and future upgradeability</strong>.</div>
 </section>
 
 <!-- ===== GitHub + Office + Backups (Phase 4-6, unchanged structure) ===== -->
@@ -858,10 +1014,11 @@ hermes gateway
     <div class="roadmap-item" data-step="1">
       <h4>Hardware Acquisition</h4>
       <p><strong>Choose your path:</strong><br>
-      🖥 <strong>Beelink GTR9 Pro</strong> (~€2,000) — Silent, compact, unified 128 GB memory. Best for 3-5 users.<br>
-      ⚡ <strong>GPU Workstation</strong> (~€3,000-8,000) — RTX 4090/5090 or dual 3090s. Higher throughput, more noise.<br>
+      🖥 <strong>Beelink GTR9 Pro</strong> (~15.000 DKK / €2.000) — Silent, compact, unified 128 GB memory. Best for 1-3 users.<br>
+      ⚡ <strong>Workstation Pro</strong> (~22.000-47.000 DKK / €3.000-6.300) — RTX 5090 + 192 GB RAM. 2-3× faster, better model quality, 5+ users. Best for teams & future-proofing.<br>
+      💻 <strong>Budget GPU Build</strong> (~12.000 DKK / €1.600) — RTX 4060 Ti 16 GB + 64 GB RAM. Entry-level, runs Gemma 4 fleet.<br>
       ☁️ <strong>VPS/Hybrid</strong> (~€50-200/mo) — Hetzner or RunPod with GPU. No local hardware needed.<br>
-      <span style="color:var(--text2);font-size:12px">Install Ubuntu 24.04 LTS, configure 96 GB VRAM split (Beelink). Order 2 TB NVMe. Install basic tools.</span></p>
+      <span style="color:var(--text2);font-size:12px">Install Ubuntu 24.04 LTS, set up VRAM split (Beelink) or CUDA (Workstation). Order all components. Time: 1-3 hours assembly.</span></p>
     </div>
 
     <div class="roadmap-item" data-step="2">
@@ -913,7 +1070,7 @@ hermes gateway
     </div>
   </div>
 
-  <div class="callout success"><strong>🗺 Total Timeline</strong>From unboxing the Beelink to a fully operational multi-user Hermes system: <strong>~3 hours</strong> for one person following this guide. Total cost: ~€2,000 (Beelink) + ~$40/month (GLM 5.2 API + domain).</div>
+  <div class="callout success"><strong>🗺 Total Timeline</strong>From unboxing to a fully operational multi-user Hermes system: <strong>~3 hours</strong> for Beelink (pre-built), <strong>~4-6 hours</strong> for Workstation Pro (assembly + cable management + BIOS tuning). Total cost: ~15.000 DKK (Beelink) to ~47.000 DKK (Workstation Pro with RTX 5090).</div>
 </section>
 
 <!-- ===== TROUBLESHOOTING ===== -->
